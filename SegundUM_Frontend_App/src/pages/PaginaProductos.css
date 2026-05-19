@@ -1,0 +1,21 @@
+.barra-busqueda {
+  display: flex;
+  gap: 8px;
+}
+
+.barra-busqueda .form-control {
+  flex: 1;
+}
+
+.layout-listado {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .layout-listado {
+    grid-template-columns: 1fr;
+  }
+}
