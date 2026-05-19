@@ -1,0 +1,15 @@
+.caja-filtros {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+.caja-filtros h5 {
+  color: var(--color-oscuro);
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  font-family: 'Georgia', serif;
+}
