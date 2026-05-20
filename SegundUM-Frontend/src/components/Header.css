@@ -1,0 +1,19 @@
+.Header {
+    background-color: aquamarine;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+}
+
+.profile-img {
+    height: 8vh;
+    width: 8vh;
+    object-fit: cover;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+}
