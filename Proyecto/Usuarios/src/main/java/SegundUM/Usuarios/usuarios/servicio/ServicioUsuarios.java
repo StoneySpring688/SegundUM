@@ -35,11 +35,9 @@ public interface ServicioUsuarios {
      * Verifica las credenciales del usuario.
      * Lanza IllegalArgumentException si las credenciales son inválidas.
      */
-    Usuario login(String email, String clave) throws RepositorioException, EntidadNoEncontrada;
+    Usuario login(String email, String clave) throws RepositorioException;
 
     Usuario getUserById(String usuarioId) throws RepositorioException, EntidadNoEncontrada;
-
-    Usuario getUserByEmail(String email) throws RepositorioException, EntidadNoEncontrada;
 
     void deleteUserById(String usuarioId) throws RepositorioException, EntidadNoEncontrada;
 
@@ -49,5 +47,5 @@ public interface ServicioUsuarios {
      * Da de alta un usuario a través de GitHub.
      * Lanza IllegalStateException si el email ya está registrado por otro usuario.
      */
-    String altaUsuarioGitHub(String idGitHub, String nombre, String email) throws RepositorioException , EntidadNoEncontrada;
+    String altaUsuarioGitHub(String idGitHub, String nombre, String email) throws RepositorioException;
 }

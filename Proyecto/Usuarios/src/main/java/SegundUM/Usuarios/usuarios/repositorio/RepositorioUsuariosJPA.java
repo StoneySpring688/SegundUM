@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-/** Implementación JPA del repositorio de usuarios; añade búsquedas por email e ID de GitHub sobre RepositorioJPA. */
+/**
+ * Implementación JPA del repositorio de usuarios.
+ */
 public class RepositorioUsuariosJPA extends RepositorioJPA<Usuario> implements RepositorioUsuarios {
 
     private static final Logger logger = LoggerFactory.getLogger(RepositorioUsuariosJPA.class);

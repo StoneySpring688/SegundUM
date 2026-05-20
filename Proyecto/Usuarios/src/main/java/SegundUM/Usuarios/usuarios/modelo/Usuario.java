@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Entidad JPA que representa un usuario del sistema, incluyendo datos de perfil, contadores y referencia OAuth2 de GitHub. */
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements Identificable {
@@ -74,14 +73,6 @@ public class Usuario implements Identificable {
     @Override
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void addProducto(String productoId) {
-        this.productos.add(productoId);
-    }
-
-    public void removeProducto(String productoId) {
-        this.productos.remove(productoId);
     }
     
     public String getEmail() {
@@ -152,20 +143,12 @@ public class Usuario implements Identificable {
         return comprasRealizadas;
     }
 
-    public void addCompraRealizada() {
-       comprasRealizadas++;
-    }
-
     public void setVentasRealizadas(int ventasRealizadas) {
         this.ventasRealizadas = ventasRealizadas;
     }
 
     public int getVentasRealizadas() {
         return ventasRealizadas;
-    }
-
-    public void addVenta() {
-       ventasRealizadas++;
     }
 
     public String getIdGitHub() {

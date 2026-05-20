@@ -3,6 +3,17 @@ name: segundum
 
 
 services:
+
+
+
+  # ========================
+
+  # Infraestructura
+
+  # ========================
+
+
+
   mysql:
 
     image: mysql:8.4
@@ -100,6 +111,15 @@ services:
       retries: 10
 
 
+
+  # ========================
+
+  # Microservicios
+
+  # ========================
+
+
+
   productos:
 
     build:
@@ -135,8 +155,6 @@ services:
       SPRING_RABBITMQ_VIRTUAL_HOST: /
 
       SPRING_RABBITMQ_SSL_ENABLED: "false"
-
-      API_USUARIOS_URL: http://usuarios:8081/api/usuarios/
 
     depends_on:
 

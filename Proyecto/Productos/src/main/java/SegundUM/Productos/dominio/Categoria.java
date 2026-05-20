@@ -6,15 +6,16 @@ import javax.xml.bind.annotation.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import SegundUM.Productos.repositorio.Identificable;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/** Entidad de dominio que modela una categoría jerárquica; sirve tanto para JPA como para deserialización JAXB. */
 @Entity
 @Table(name = "categorias")
 @XmlRootElement(name = "categoria")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Categoria {
+public class Categoria implements Identificable {
 
 	@Id
 	@XmlAttribute
@@ -56,8 +57,9 @@ public class Categoria {
 		this.nombre = nombre;
 	}
 
-	// JAXB invoca este método tras deserializar cada nodo para reparar la relación bidireccional padre-hijo
+	// se supone que JAXB ejecuta esto despues de deserializar cada categoría
 	void afterUnmarshal(Unmarshaller unmarshaller, Object parent) {
+		// Establecer la relación bidireccional para cada subcategoría
 		if (this.subcategorias != null) {
 			for (Categoria subcategoria : this.subcategorias) {
 				subcategoria.categoriaPadre = this;
@@ -91,10 +93,13 @@ public class Categoria {
 		return categoriaPadre == null;
 	}
 
+	// Getters y setters (Implementa Identificable)
+	@Override
 	public String getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(String id) {
 		this.id = id;
 	}

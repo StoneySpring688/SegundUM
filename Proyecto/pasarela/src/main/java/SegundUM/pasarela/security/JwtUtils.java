@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-/** Utilidad para generar, validar y extraer información de tokens JWT compartidos entre los microservicios. */
 @Component
 public class JwtUtils {
 

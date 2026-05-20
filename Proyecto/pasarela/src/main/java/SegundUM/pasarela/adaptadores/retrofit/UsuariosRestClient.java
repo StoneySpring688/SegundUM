@@ -10,12 +10,12 @@ import retrofit2.http.Path;
 
 public interface UsuariosRestClient {
 
-    @GET("usuarios/sesion/{email}/{clave}")
+    @GET("usuarios/verificar/{email}/{clave}")
     Call<UsuarioDTO> verificarCredenciales(
             @Path("email") String email,
             @Path("clave") String clave);
 
-    @GET("usuarios/github/{idGitHub}")
+    @GET("usuarios/verificar-github/{idGitHub}")
     Call<UsuarioDTO> verificarGitHub(
             @Path("idGitHub") String idGitHub);
 

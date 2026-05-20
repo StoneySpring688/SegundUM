@@ -21,6 +21,12 @@ public interface PuertoEntradaEventos {
     void manejarUsuarioEliminado(String idUsuario);
 
     /**
+     * Maneja el evento de producto modificado (titulo):
+     * actualiza el titulo del producto en las compraventas.
+     */
+    void manejarProductoModificado(String idProducto, String nuevoTitulo);
+
+    /**
      * Maneja el evento de producto eliminado:
      * establece a null los datos del producto en las compraventas.
      */

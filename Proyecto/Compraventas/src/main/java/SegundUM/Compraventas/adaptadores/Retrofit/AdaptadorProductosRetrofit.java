@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import SegundUM.Compraventas.puertos.PuertoProductos;
 import SegundUM.Compraventas.rest.dto.ProductoDTO;
 
-/** Adaptador de salida que consulta el microservicio de Productos via Retrofit cuando así se configure. */
 @Component
 @ConditionalOnProperty(name="productos.adaptador", havingValue="retrofit")
 public class AdaptadorProductosRetrofit implements PuertoProductos {

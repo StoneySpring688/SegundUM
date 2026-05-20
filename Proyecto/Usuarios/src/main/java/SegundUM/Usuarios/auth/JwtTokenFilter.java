@@ -24,8 +24,15 @@ import javax.ws.rs.core.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-/** Filtro JAX-RS que valida el JWT (cabecera Authorization o cookie) y rechaza peticiones no autorizadas. */
+/**
+ * Filtro JAX-RS para control de autenticación y autorización mediante JWT.
+ *
+ * - Comprueba si la ruta es pública (@PermitAll) y la deja pasar.
+ * - Para rutas protegidas, valida el token JWT de la cabecera Authorization o cookie 'jwt'.
+ * - Si la ruta tiene @RolesAllowed, verifica que el usuario tenga el rol adecuado.
+ * - Pone la información del token (claims) como propiedad de la petición.
+ * @deprecated Deshabilitado según Tarea 8. La autenticación ahora la gestiona la pasarela.
+ */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {

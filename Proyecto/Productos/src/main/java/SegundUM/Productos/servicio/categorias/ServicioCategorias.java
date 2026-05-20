@@ -28,6 +28,11 @@ public interface ServicioCategorias {
     void modificarDescripcion(String categoriaId, String nuevaDescripcion) throws EntidadNoEncontrada;
 
     /**
+     * Devuelve las categorías raíz (categoriaPadre == null).
+     */
+    List<Categoria> getCategoriasRaiz();
+
+    /**
      * Devuelve todos los descendientes (directos e indirectos) de la categoría indicada.
      */
     List<Categoria> getDescendientes(String categoriaId);
@@ -39,6 +44,9 @@ public interface ServicioCategorias {
     Categoria buscarCategoriaPorNombre(String nombre);
 
     Categoria getCategoriaById(String id) throws EntidadNoEncontrada;
+
+    @Deprecated
+    List<Categoria> getCategorias();
 
     Page<Categoria> getCategoriasPaginado(Pageable pageable);
 

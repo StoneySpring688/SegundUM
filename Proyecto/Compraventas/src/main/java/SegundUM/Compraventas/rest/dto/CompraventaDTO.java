@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import org.springframework.hateoas.RepresentationModel;
 import SegundUM.Compraventas.dominio.Compraventa;
 
-
+/**
+ * Este DTO es para los GET
+ **/
 public class CompraventaDTO extends RepresentationModel<CompraventaDTO> implements Serializable {
     
     private String id;

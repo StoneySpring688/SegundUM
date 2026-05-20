@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import SegundUM.Compraventas.puertos.PuertoProductos;
 import SegundUM.Compraventas.rest.dto.ProductoDTO;
 
-/** Adaptador de salida que consulta el microservicio de Productos via RestTemplate cuando así se configure. */
 @Component
 @ConditionalOnProperty(name = "productos.adaptador", havingValue = "spring")
 public class AdaptadorProductosSpring implements PuertoProductos {

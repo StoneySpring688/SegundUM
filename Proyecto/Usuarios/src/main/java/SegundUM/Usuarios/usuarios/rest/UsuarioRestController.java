@@ -31,7 +31,14 @@ import SegundUM.Usuarios.usuarios.rest.dto.UsuarioDTO;
 import SegundUM.Usuarios.servicio.FactoriaServicios;
 import SegundUM.Usuarios.usuarios.servicio.ServicioUsuarios;
 
-/** Controlador JAX-RS que expone la API REST de usuarios bajo /api/usuarios; delega la lógica en ServicioUsuarios. */
+/**
+ * Controlador REST para la gestión de usuarios.
+ *
+ * Las excepciones se propagan al contenedor JAX-RS y son traducidas
+ * a códigos HTTP por los {@code ExceptionMapper} registrados.
+ *
+ * Base path: /api/usuarios
+ */
 @Path("/usuarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -55,10 +62,11 @@ public class UsuarioRestController {
         return uriInfo.getBaseUriBuilder().path("usuarios").path(id).build();
     }
 
+    /** GET /usuarios/getAll — Listado de usuarios con HATEOAS */
     @GET
     @RolesAllowed("USUARIO")
     public Response getAllusuarios() throws Exception {
-        logger.info("Petición recibida: GET /usuarios/");
+        logger.info("Petición recibida: GET /usuarios/getAll");
 
         List<Usuario> usuarios = servicioUsuarios.getAllUsuarios();
 
@@ -85,6 +93,7 @@ public class UsuarioRestController {
         return Response.ok(listado).build();
     }
 
+    /** GET /usuarios/{id} — Recuperación de usuario con HATEOAS */
     @GET
     @Path("/{id}")
     @RolesAllowed("USUARIO")
@@ -94,16 +103,15 @@ public class UsuarioRestController {
         Usuario usuario = servicioUsuarios.getUserById(id);
 
         UsuarioDTO dto = UsuarioDTO.fromEntity(usuario);
-        String url = urlUsuario(usuario.getId()).toString();
-        dto.addLink("self", url);
-        dto.addLink("all", UriBuilder.fromUri(uriInfo.getBaseUri()).path("usuarios").build().toString());
-        dto.addLink("modificar", url);
-        dto.addLink("eliminar", url);
+        dto.addLink("self", urlUsuario(usuario.getId()).toString());
+        dto.addLink("all", UriBuilder.fromUri(uriInfo.getBaseUri())
+                .path("usuarios").path("getAll").build().toString());
 
         logger.info("Usuario {} recuperado.", id);
         return Response.ok(dto).build();
     }
 
+    /** POST /usuarios — Alta de usuario (datos en el cuerpo) */
     @POST
     @PermitAll
     public Response registrarUsuario(NuevoUsuarioDTO dto) throws Exception {
@@ -117,6 +125,7 @@ public class UsuarioRestController {
         return Response.created(nuevaURI).entity(id).build();
     }
 
+    /** POST /usuarios/github — Alta de usuario vía GitHub (datos en el cuerpo) */
     @POST
     @Path("/github")
     @PermitAll
@@ -134,6 +143,7 @@ public class UsuarioRestController {
         return Response.created(urlUsuario(id)).entity(out).build();
     }
 
+    /** PUT /usuarios/{id} — Modificar varios campos (datos en el cuerpo) */
     @PUT
     @Path("/{id}")
     @RolesAllowed("USUARIO")
@@ -148,7 +158,6 @@ public class UsuarioRestController {
         Claims claims = (Claims) requestContext.getProperty("claims");
         String idUsuarioAutenticado = claims.getSubject();
 
-        // Solo el propio usuario puede modificar sus datos
         if (!usuarioId.equals(idUsuarioAutenticado)) {
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("No tienes permiso para modificar este usuario.").build();
@@ -159,6 +168,7 @@ public class UsuarioRestController {
         return Response.noContent().build();
     }
 
+    /** DELETE /usuarios/{id} — Eliminar usuario */
     @DELETE
     @Path("/{id}")
     @RolesAllowed("USUARIO")
@@ -167,19 +177,9 @@ public class UsuarioRestController {
         return Response.noContent().build();
     }
 
-    /** Devuelve solo el ID del usuario por email; usado internamente por otros microservicios. */
+    /** GET /usuarios/verificar/{email}/{clave} — Verificar credenciales (uso interno de la pasarela) */
     @GET
-    @Path("/email/{email}")
-    @PermitAll
-    public Response obtenerIdPorEmail(@PathParam("email") String email) throws Exception {
-        logger.info("Búsqueda de ID de usuario por email: {}", email);
-        Usuario usuario = servicioUsuarios.getUserByEmail(email);
-        return Response.ok("{\"id\":\"" + usuario.getId() + "\"}").type(MediaType.APPLICATION_JSON).build();
-    }
-
-    /** Verifica credenciales email/clave; llamado internamente por la pasarela para el flujo de login. */
-    @GET
-    @Path("/sesion/{email}/{clave}")
+    @Path("/verificar/{email}/{clave}")
     @PermitAll
     public Response verificarCredenciales(
             @PathParam("email") String email,
@@ -193,9 +193,9 @@ public class UsuarioRestController {
         return Response.ok(dto).build();
     }
 
-    /** Recupera el usuario asociado a un ID de GitHub; usado por la pasarela tras el OAuth2 callback. */
+    /** GET /usuarios/verificar-github/{idGitHub} — Recuperar usuario por ID de GitHub */
     @GET
-    @Path("/github/{idGitHub}")
+    @Path("/verificar-github/{idGitHub}")
     @PermitAll
     public Response verificarGitHub(@PathParam("idGitHub") String idGitHub) throws Exception {
 

@@ -4,10 +4,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import SegundUM.Compraventas.dominio.Compraventa;
+import SegundUM.Compraventas.servicio.ServicioException;
 
 public interface ServicioCompraventa {
-
-    Compraventa realizarCompra(String idProducto, String idComprador, String tokenCrudo) throws Exception;
+	
+	/**
+	 * Registrar la compraventa
+	 * @throws ServicioException 
+	 **/
+    Compraventa realizarCompra(String idProducto, String idComprador, String tokenCrudo) throws ServicioException;
     
     /**
      * Recuperar las compras realizadas por un usuario

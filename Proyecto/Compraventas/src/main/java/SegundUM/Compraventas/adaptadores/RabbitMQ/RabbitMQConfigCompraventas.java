@@ -10,8 +10,17 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-
-/** Configuración de RabbitMQ: declara el exchange, la cola y los bindings que consume este microservicio. */
+/**
+ * Configuración de RabbitMQ para el microservicio de Compraventas.
+ *
+ * El exchange "bus" y las colas se crean de forma centralizada
+ * mediante el script rabbitmq-setup.
+ *
+ * Esta clase solo define:
+ *   - Referencias al exchange y cola (necesarias para los Binding)
+ *   - Bindings (suscripciones a eventos de otros microservicios)
+ *   - Converter y template para enviar mensajes
+ */
 @Configuration
 public class RabbitMQConfigCompraventas {
 
@@ -19,7 +28,7 @@ public class RabbitMQConfigCompraventas {
 
     public static final String EXCHANGE_NAME = "bus";
     public static final String QUEUE_NAME = "compraventas";
-    public static final String ROUTING_KEY = "bus.compraventas.";
+    public static final String ROUTING_KEY_COMPRAVENTA_CREADA = "bus.compraventas.compraventa-creada";
 
     // Referencias al exchange y cola (creados por rabbitmq-setup)  
     @Bean
@@ -36,19 +45,21 @@ public class RabbitMQConfigCompraventas {
 
     @Bean
     public Binding compraventasBindingUsuariosModificado(Queue compraventasQueue, TopicExchange busExchange) {
-        logger.info("Binding creado: {} -> {}", "bus.usuarios.usuario-modificado", QUEUE_NAME);
         return BindingBuilder.bind(compraventasQueue).to(busExchange).with("bus.usuarios.usuario-modificado");
     }
 
     @Bean
     public Binding compraventasBindingUsuariosEliminado(Queue compraventasQueue, TopicExchange busExchange) {
-        logger.info("Binding creado: {} -> {}", "bus.usuarios.usuario-eliminado", QUEUE_NAME);
         return BindingBuilder.bind(compraventasQueue).to(busExchange).with("bus.usuarios.usuario-eliminado");
     }
 
     @Bean
+    public Binding compraventasBindingProductosModificado(Queue compraventasQueue, TopicExchange busExchange) {
+        return BindingBuilder.bind(compraventasQueue).to(busExchange).with("bus.productos.producto-modificado");
+    }
+
+    @Bean
     public Binding compraventasBindingProductosEliminado(Queue compraventasQueue, TopicExchange busExchange) {
-        logger.info("Binding creado: {} -> {}", "bus.productos.producto-eliminado", QUEUE_NAME);
         return BindingBuilder.bind(compraventasQueue).to(busExchange).with("bus.productos.producto-eliminado");
     }
 

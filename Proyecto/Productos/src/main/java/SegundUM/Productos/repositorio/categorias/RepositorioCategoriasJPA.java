@@ -20,6 +20,11 @@ public interface RepositorioCategoriasJPA extends RepositorioCategorias, JpaRepo
 	/**
      * Recupera todas las categorías raíz (sin padre).
      */
+	@Deprecated
+    @Override
+    @Query("SELECT c FROM Categoria c WHERE c.categoriaPadre IS NULL")
+    List<Categoria> getCategoriasRaiz();
+    
     @Override
     @Query("SELECT c FROM Categoria c WHERE c.categoriaPadre IS NULL")
     Page<Categoria> getCategoriasRaiz(Pageable pageable);

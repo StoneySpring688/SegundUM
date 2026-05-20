@@ -6,15 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import org.springframework.beans.factory.annotation.Value;
 
-/** Configura y expone el cliente Retrofit para comunicarse con el microservicio Usuarios. */
 @Configuration
 public class RetrofitConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(RetrofitConfig.class);
 
-    @Value("${api.usuarios.url:http://localhost:8081/api/}")
+    @org.springframework.beans.factory.annotation.Value("${api.usuarios.url:http://localhost:8081/api/}")
     private String usuariosBaseUrl;
 
     @Bean

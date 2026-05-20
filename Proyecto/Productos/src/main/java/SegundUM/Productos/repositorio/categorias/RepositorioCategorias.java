@@ -20,6 +20,8 @@ public interface RepositorioCategorias extends PagingAndSortingRepository<Catego
     /**
      * Recupera todas las categorías raíz (sin padre).
      */
+	@Deprecated
+    List<Categoria> getCategoriasRaiz();
 	Page<Categoria> getCategoriasRaiz(Pageable pageable);
 	
 	/**
@@ -32,4 +34,5 @@ public interface RepositorioCategorias extends PagingAndSortingRepository<Catego
      */
     List<Categoria> getDescendientes(String categoriaId);
 
+    
 }

@@ -8,7 +8,15 @@ import SegundUM.Usuarios.util.PropertiesReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Factoría de servicios: resuelve la implementación concreta leyendo el nombre de clase desde servicios.properties y la almacena como singleton. */
+/*
+ * Factoría que encapsula la implementación de un servicio.
+ * 
+ * Utiliza un fichero de propiedades para cargar la implementación.
+ *
+ * Los servicios se gestionan como un singleton (instancia única).
+ *
+ */
+
 public class FactoriaServicios {
 
 	private static final Logger logger = LoggerFactory.getLogger(FactoriaServicios.class);
@@ -16,11 +24,7 @@ public class FactoriaServicios {
 	private static final String PROPERTIES = "servicios.properties";
 	
 	private static Map<Class<?>, Object> servicios = new HashMap<>();
-
-	public static <T> void registrar(Class<T> interfaz, T instancia) {
-		servicios.put(interfaz, instancia);
-	}
-
+	
 	@SuppressWarnings("unchecked")
 	public static <T> T getServicio(Class<T> servicio) {
 				

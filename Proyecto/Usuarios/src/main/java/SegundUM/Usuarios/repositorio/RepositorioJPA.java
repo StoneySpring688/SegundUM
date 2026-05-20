@@ -11,7 +11,6 @@ import org.eclipse.persistence.config.QueryHints;
 
 import SegundUM.Usuarios.util.EntityManagerHelper;
 
-/** Implementación genérica de repositorio sobre JPA; gestiona el ciclo de vida del EntityManager por hilo. */
 public abstract class RepositorioJPA<T extends Identificable> implements RepositorioString<T> {
     
     public abstract Class<T> getClase();

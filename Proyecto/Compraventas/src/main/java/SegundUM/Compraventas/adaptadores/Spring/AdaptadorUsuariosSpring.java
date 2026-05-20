@@ -16,7 +16,6 @@ import SegundUM.Compraventas.puertos.PuertoAutenticacion;
 import SegundUM.Compraventas.puertos.PuertoUsuarios;
 import SegundUM.Compraventas.rest.dto.UsuarioDTO;
 
-/** Adaptador de salida que consulta Usuarios y gestiona autenticación via RestTemplate cuando así se configure. */
 @Component
 @ConditionalOnProperty(name="usuarios.adaptador", havingValue="spring")
 public class AdaptadorUsuariosSpring implements PuertoUsuarios, PuertoAutenticacion{
@@ -50,10 +49,9 @@ private final RestTemplate restTemplate;
 	@Override
 	public String login(String email, String clave) {
 
-		// Derivar la URL de auth a partir de la URL base de usuarios
 		String authUrl = urlBase.replace("usuarios/", "auth/login");
 		
-		// Cabeceras form-urlencoded requeridas por el endpoint @FormParam de Usuarios
+		// 2. Configuramos las cabeceras para enviar un formulario HTML estándar (requerido por @FormParam)
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 

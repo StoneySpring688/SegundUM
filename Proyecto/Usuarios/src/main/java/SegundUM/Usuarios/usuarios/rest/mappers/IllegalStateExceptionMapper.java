@@ -5,10 +5,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import SegundUM.Usuarios.usuarios.rest.dto.ErrorResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Traduce IllegalStateException a una respuesta HTTP 409 con cuerpo JSON. */
 @Provider
 public class IllegalStateExceptionMapper implements ExceptionMapper<IllegalStateException> {
 

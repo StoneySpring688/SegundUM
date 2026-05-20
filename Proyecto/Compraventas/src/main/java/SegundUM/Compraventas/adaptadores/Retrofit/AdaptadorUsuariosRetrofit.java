@@ -4,12 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import SegundUM.Compraventas.puertos.PuertoUsuarios;
 import SegundUM.Compraventas.rest.dto.UsuarioDTO;
+import retrofit2.Response;
 
-
-/** Adaptador de salida que consulta el microservicio de Usuarios via Retrofit cuando así se configure. */
 @Component
 @ConditionalOnProperty(name="usuarios.adaptador", havingValue="retrofit")
 public class AdaptadorUsuariosRetrofit implements PuertoUsuarios {

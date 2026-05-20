@@ -11,7 +11,6 @@ import retrofit2.Response;
 
 import java.io.IOException;
 
-/** Adaptador de salida que implementa PuertoUsuarios llamando al microservicio Usuarios mediante Retrofit. */
 @Component
 public class AdaptadorUsuariosRetrofit implements PuertoUsuarios {
 

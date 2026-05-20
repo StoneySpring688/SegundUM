@@ -2,7 +2,10 @@ package SegundUM.Usuarios.repositorio;
 
 import SegundUM.Usuarios.util.PropertiesReader;
 
-/** Factoría de repositorios: resuelve la implementación concreta leyendo el nombre de clase desde repositorios.properties. */
+/**
+ * Factoría que encapsula la implementación de los repositorios.
+ * Utiliza un fichero de propiedades para cargar la implementación.
+ */
 public class FactoriaRepositorios {
 	
 	private static final String PROPERTIES = "repositorios.properties";

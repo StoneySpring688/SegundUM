@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 public class LugarRecogidaDTO extends RepresentationModel<LugarRecogidaDTO> implements Serializable {
     private static final long serialVersionUID = 8886619346871580550L;

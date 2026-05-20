@@ -10,34 +10,34 @@ import org.springframework.transaction.annotation.Transactional;
 
 import SegundUM.Productos.dominio.Categoria;
 import SegundUM.Productos.repositorio.EntidadNoEncontrada;
-import SegundUM.Productos.repositorio.categorias.RepositorioCategorias;
+import SegundUM.Productos.repositorio.categorias.RepositorioCategoriasJPA;
 import SegundUM.Productos.repositorio.categorias.RepositorioCategoriasXML;
-import SegundUM.Productos.repositorio.categorias.RepositorioCategoriasXMLImpl;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-/** Implementación del servicio de categorías; gestiona la carga desde XML y las consultas JPA. */
 @Service
 @Transactional
 public class ServicioCategoriasImpl implements ServicioCategorias {
 	private static final Logger logger = LoggerFactory.getLogger(ServicioCategoriasImpl.class);
     private static final String CARPETA_CATEGORIAS = "categoriasXML";
 
-    private final RepositorioCategorias repositorioCategorias;
+    private final RepositorioCategoriasJPA repositorioCategorias;
     private final RepositorioCategoriasXML repositorioCategoriasXML;
 
     @Autowired
-    public ServicioCategoriasImpl(RepositorioCategorias repositorioCategorias) {
+    public ServicioCategoriasImpl(RepositorioCategoriasJPA repositorioCategorias) {
         this.repositorioCategorias = repositorioCategorias;
-        this.repositorioCategoriasXML = new RepositorioCategoriasXMLImpl();
+        this.repositorioCategoriasXML = new RepositorioCategoriasXML();
     }
 
     @Override
     public void cargarJerarquia(String ruta) {
         try {
-            Categoria raiz = repositorioCategoriasXML.cargar(ruta);
+            Categoria raiz = repositorioCategoriasXML.getById(ruta);
             if (!repositorioCategorias.existsById(raiz.getId())) {
                 repositorioCategorias.save(raiz);
                 logger.info("Jerarquía de categorías cargada: " + raiz.toString());
@@ -61,7 +61,6 @@ public class ServicioCategoriasImpl implements ServicioCategorias {
             throw new IllegalStateException("El directorio " + CARPETA_CATEGORIAS + " no existe");
         }
 
-        // Filtrar solo ficheros con extensión .xml
         File[] archivosXML = directorio.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
@@ -95,6 +94,12 @@ public class ServicioCategoriasImpl implements ServicioCategorias {
     }
 
     @Override
+    public List<Categoria> getCategoriasRaiz() {
+        logger.info("Recuperando categorías raíz");
+        return repositorioCategorias.getCategoriasRaiz();
+    }
+
+    @Override
     public List<Categoria> getDescendientes(String categoriaId) {
     	logger.info("Recuperando descendientes de la categoría con ID " + categoriaId);
         List<Categoria> descendientes = repositorioCategorias.getDescendientes(categoriaId);
@@ -114,6 +119,18 @@ public class ServicioCategoriasImpl implements ServicioCategorias {
     public Categoria getCategoriaById(String id) throws EntidadNoEncontrada {
     	return repositorioCategorias.findById(id)
                 .orElseThrow(() -> new EntidadNoEncontrada("La categoría con ID " + id + " no existe."));
+    }
+
+    @Deprecated
+    @Override
+    public List<Categoria> getCategorias() {
+    	List<Categoria> categorias = StreamSupport.stream(repositorioCategorias.findAll().spliterator(), false).collect(Collectors.toList());
+    	if (categorias.isEmpty()) {
+			logger.warn("No se encontraron categorías en el sistema");
+		} else {
+			logger.info("Recuperadas " + categorias.size() + " categorías del sistema");
+		}
+    	return categorias;
     }
 
     @Override

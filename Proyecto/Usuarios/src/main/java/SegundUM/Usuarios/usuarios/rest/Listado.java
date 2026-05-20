@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import SegundUM.Usuarios.usuarios.modelo.ResumenUsuario;
 
-/** Contenedor de respuesta HATEOAS para el listado de usuarios: agrupa resumen y URL de cada elemento. */
 @XmlRootElement
 public class Listado {
 

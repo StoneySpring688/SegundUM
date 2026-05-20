@@ -1,11 +1,11 @@
 package SegundUM.Compraventas.rest.controllers;
 
 import java.net.URI;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.api.annotations.ParameterObject;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,16 +21,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import SegundUM.Compraventas.rest.api.CompraventaApi;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import SegundUM.Compraventas.dominio.Compraventa;
 import SegundUM.Compraventas.rest.dto.CompraventaDTO;
 import SegundUM.Compraventas.rest.dto.NuevaCompraventaDTO;
+import SegundUM.Compraventas.servicio.ServicioException;
 import SegundUM.Compraventas.servicio.compraventa.ServicioCompraventa;
 
-/** Controlador REST que expone los endpoints de compraventas con paginación y enlaces HATEOAS. */
 @RestController
 @RequestMapping(value = "/api/compraventas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CompraventaRestController implements CompraventaApi {
+@Tag(name = "Compraventas", description = "Operaciones de gestión de compraventas entre usuarios")
+public class CompraventaRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(CompraventaRestController.class);
 
@@ -45,12 +48,12 @@ public class CompraventaRestController implements CompraventaApi {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Realizar una compra", description = "Registra una nueva compraventa verificando stock y usuarios")
     @PreAuthorize("hasAuthority('USUARIO') and #dto.idComprador == authentication.principal")
-    public ResponseEntity<EntityModel<CompraventaDTO>> realizarCompra(@Valid @RequestBody NuevaCompraventaDTO dto) throws Exception {
+    public ResponseEntity <EntityModel<CompraventaDTO>> realizarCompra(@Valid @RequestBody NuevaCompraventaDTO dto) throws ServicioException {
         
         logger.info("Petición REST para realizar compra. Producto: {}, Comprador: {}", dto.getIdProducto(), dto.getIdComprador());
         
-        // El token crudo (sin "Bearer ") lo almacena el filtro JWT como credencial
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String token = (String) auth.getCredentials();
         
@@ -85,10 +88,11 @@ public class CompraventaRestController implements CompraventaApi {
     }
 
     @GetMapping("/comprador/{idComprador}")
+    @Operation(summary = "Historial de compras", description = "Devuelve paginadas todas las compras de un usuario")
     @PreAuthorize("hasAuthority('USUARIO') and #idComprador == authentication.principal")
     public PagedModel<EntityModel<CompraventaDTO>> recuperarComprasDeUsuario(
             @PathVariable String idComprador,
-            @ParameterObject Pageable paginacion) throws Exception {
+            @ParameterObject Pageable paginacion) {
 
         Page<Compraventa> pagina = servicioCompraventa.recuperarComprasDeUsuario(idComprador, paginacion);
         Page<CompraventaDTO> paginaDTO = pagina.map(CompraventaDTO::fromEntity);
@@ -97,10 +101,11 @@ public class CompraventaRestController implements CompraventaApi {
     }
 
     @GetMapping("/vendedor/{idVendedor}")
+    @Operation(summary = "Historial de ventas", description = "Devuelve paginadas todas las ventas de un usuario")
     @PreAuthorize("hasAuthority('USUARIO') and #idVendedor == authentication.principal")
     public PagedModel<EntityModel<CompraventaDTO>> recuperarVentasDeUsuario(
             @PathVariable String idVendedor,
-            @ParameterObject Pageable paginacion) throws Exception {
+            @ParameterObject Pageable paginacion) {
 
         Page<Compraventa> pagina = servicioCompraventa.recuperarVentasDeUsuario(idVendedor, paginacion);
         Page<CompraventaDTO> paginaDTO = pagina.map(CompraventaDTO::fromEntity);
@@ -109,11 +114,12 @@ public class CompraventaRestController implements CompraventaApi {
     }
 
     @GetMapping("/entre")
+    @Operation(summary = "Historial entre dos usuarios", description = "Devuelve las operaciones exactas entre un comprador y un vendedor")
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
     public PagedModel<EntityModel<CompraventaDTO>> recuperarCompraventasEntre(
             @RequestParam String idComprador,
             @RequestParam String idVendedor,
-            @ParameterObject Pageable paginacion) throws Exception {
+            @ParameterObject Pageable paginacion) {
 
         Page<Compraventa> pagina = servicioCompraventa.recuperarCompraventasEntre(idComprador, idVendedor, paginacion);
         Page<CompraventaDTO> paginaDTO = pagina.map(CompraventaDTO::fromEntity);

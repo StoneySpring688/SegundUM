@@ -6,11 +6,11 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 import SegundUM.Usuarios.repositorio.EntidadNoEncontrada;
+import SegundUM.Usuarios.usuarios.rest.dto.ErrorResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Traduce EntidadNoEncontrada a una respuesta HTTP 404 con cuerpo JSON. */
 @Provider
 public class EntidadNoEncontradaExceptionMapper implements ExceptionMapper<EntidadNoEncontrada> {
 

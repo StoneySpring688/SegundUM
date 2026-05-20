@@ -13,27 +13,26 @@ import org.springframework.stereotype.Service;
 import SegundUM.Compraventas.dominio.Compraventa;
 import SegundUM.Compraventas.puertos.PuertoAutenticacion;
 import SegundUM.Compraventas.puertos.PuertoEntradaEventos;
-import SegundUM.Compraventas.adaptadores.RabbitMQ.eventos.EventoCreacionCompraventa;
 import SegundUM.Compraventas.puertos.PuertoSalidaEventos;
 import SegundUM.Compraventas.puertos.PuertoProductos;
 import SegundUM.Compraventas.puertos.PuertoUsuarios;
-import SegundUM.Compraventas.repositorio.compraventa.RepositorioCompraventa;
+import SegundUM.Compraventas.repositorio.compraventa.RepositorioCompraventaMongo;
 import SegundUM.Compraventas.rest.dto.ProductoDTO;
 import SegundUM.Compraventas.rest.dto.UsuarioDTO;
+import SegundUM.Compraventas.servicio.ServicioException;
 
-/** Implementación de la lógica de negocio de compraventas; actúa también como receptor de eventos del bus. */
 @Service
 public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntradaEventos {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServicioCompraventaImpl.class);
 
-	private final RepositorioCompraventa repositorio;
+	private final RepositorioCompraventaMongo repositorio;
     private final PuertoProductos puertoProductos;
     private final PuertoUsuarios puertoUsuarios;
     private final PuertoSalidaEventos puertoEventos;
 
     @Autowired
-    public ServicioCompraventaImpl(RepositorioCompraventa repositorio,
+    public ServicioCompraventaImpl(RepositorioCompraventaMongo repositorio,
                                    PuertoProductos puertoProductos,
                                    PuertoUsuarios puertoUsuarios,
                                    PuertoAutenticacion puertoAutenticacion,
@@ -45,15 +44,8 @@ public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntra
     }
 
     @Override
-    public Compraventa realizarCompra(String idProducto, String idComprador, String tokenCrudo)  {
-        if (idProducto == null || idProducto.isBlank())
-            throw new IllegalArgumentException("El campo idProducto no puede estar vacío.");
-        if (idComprador == null || idComprador.isBlank())
-            throw new IllegalArgumentException("El campo idComprador no puede estar vacío.");
-        if (tokenCrudo == null || tokenCrudo.isBlank())
-            throw new IllegalArgumentException("El token de autenticación no puede estar vacío.");
+    public Compraventa realizarCompra(String idProducto, String idComprador, String tokenCrudo) throws ServicioException {
 
-        // Añadir prefijo Bearer para las llamadas internas a Usuarios
         String token = "Bearer " + tokenCrudo;
 
         ProductoDTO producto = puertoProductos.obtenerDatosProducto(idProducto);
@@ -70,14 +62,11 @@ public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntra
 
         UsuarioDTO vendedor = puertoUsuarios.obtenerDatosUsuario(producto.getIdVendedor(), token);
 
-        // Extraer descripción del lugar de recogida; puede ser null si el producto no la define
-        String descripcionRecogida = producto.getRecogida() != null ? producto.getRecogida().getDescripcion() : null;
-
         Compraventa nuevaCompraventa = new Compraventa(
                 null,
                 idProducto,
                 producto.getTitulo(),
-                descripcionRecogida,
+                producto.getRecogida().getDescripcion(),
                 producto.getPrecio(),
                 producto.getIdVendedor(),
                 vendedor.getNombre(),
@@ -88,31 +77,28 @@ public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntra
 
         Compraventa guardada = repositorio.save(nuevaCompraventa);
 
-        puertoEventos.publicar(new EventoCreacionCompraventa(guardada));
+        puertoEventos.publicarCompraventaCreada(
+                guardada.getId(),
+                idProducto,
+                idComprador,
+                producto.getIdVendedor()
+        );
 
         return guardada;
     }
 
     @Override
     public Page<Compraventa> recuperarComprasDeUsuario(String idComprador, Pageable pageable) {
-        if (idComprador == null || idComprador.isBlank())
-            throw new IllegalArgumentException("El campo idComprador no puede estar vacío.");
         return repositorio.findByIdComprador(idComprador, pageable);
     }
 
     @Override
     public Page<Compraventa> recuperarVentasDeUsuario(String idVendedor, Pageable pageable) {
-        if (idVendedor == null || idVendedor.isBlank())
-            throw new IllegalArgumentException("El campo idVendedor no puede estar vacío.");
         return repositorio.findByIdVendedor(idVendedor, pageable);
     }
 
     @Override
     public Page<Compraventa> recuperarCompraventasEntre(String idComprador, String idVendedor, Pageable pageable) {
-        if (idComprador == null || idComprador.isBlank())
-            throw new IllegalArgumentException("El campo idComprador no puede estar vacío.");
-        if (idVendedor == null || idVendedor.isBlank())
-            throw new IllegalArgumentException("El campo idVendedor no puede estar vacío.");
         return repositorio.findByIdCompradorAndIdVendedor(idComprador, idVendedor, pageable);
     }
 
@@ -158,6 +144,19 @@ public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntra
 
         logger.info("Datos de usuario eliminado en {} compraventas como vendedor y {} como comprador",
                 comoVendedor.size(), comoComprador.size());
+    }
+
+    @Override
+    public void manejarProductoModificado(String idProducto, String nuevoTitulo) {
+        logger.info("Evento recibido: producto-modificado para producto {}", idProducto);
+
+        List<Compraventa> compraventas = repositorio.findByIdProducto(idProducto);
+        for (Compraventa c : compraventas) {
+            c.setTitulo(nuevoTitulo);
+            repositorio.save(c);
+        }
+
+        logger.info("Titulo actualizado en {} compraventas", compraventas.size());
     }
 
     @Override
