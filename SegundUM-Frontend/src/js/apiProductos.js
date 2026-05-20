@@ -40,14 +40,12 @@ export const apiProductos = {
 
         const data = response.data;
 
-        // 1. Extraemos SOLO los datos de las categorías (ubicados en _embedded.categoriaDTOList)
         if (data && data._embedded && data._embedded.categoriaDTOList) {
-          // 2. Usamos la recursividad para extraer las raíces y todas sus subcategorías
+          // Extraer las raices y las subcategorias de forma recursiva.
           const categoriasAplanadas = extraerSubcategorias(data._embedded.categoriaDTOList);
           todasLasCategorias = todasLasCategorias.concat(categoriasAplanadas);
         }
 
-        // 3. Usamos la metainformación exclusivamente para el control de la paginación
         if (data && data.page) {
           const { number, totalPages } = data.page;
           
@@ -62,12 +60,56 @@ export const apiProductos = {
       }
 
       console.log(`¡Carga completada! Se han guardado ${todasLasCategorias.length} categorías y subcategorías en memoria.`);
-      // Retorna el array unificado únicamente con los datos (sin metainformación)
       return todasLasCategorias;
 
     } catch (error) {
       console.error("Error crítico al intentar precargar las categorías:", error);
       throw error;
+    }
+  },
+
+  /**
+   * Busca productos según varios filtros opcionales y paginación.
+   * Solo envía en la URL los parámetros que no estén en blanco.
+   * * @param {Object} filtros - Parámetros de búsqueda
+   * @param {string} [filtros.categoriaId] - ID de la categoría a filtrar
+   * @param {string} [filtros.texto] - Texto a buscar en el título o descripción
+   * @param {string} [filtros.estadoMinimo] - Estado mínimo requerido (ej: 'NUEVO')
+   * @param {number} [filtros.precioMaximo] - Precio máximo del producto
+   * @param {number} [filtros.page] - Número de la página a solicitar
+   * @param {number} [filtros.size] - Cantidad de elementos por página
+   * @returns {Promise<Array>} Lista de productos (DTOs) sin la metainformación
+   */
+  buscarProductos: async ({ categoriaId, texto, estadoMinimo, precioMaximo, page, size } = {}) => {
+    try {
+      // 1. Construimos el objeto de parámetros dinámicamente
+      const params = {};
+
+      // Solo añadimos al objeto 'params' aquellos valores que existan y no estén vacíos
+      if (categoriaId !== undefined && categoriaId !== null && categoriaId !== '') params.categoriaId = categoriaId;
+      if (texto !== undefined && texto !== null && texto !== '') params.texto = texto;
+      if (estadoMinimo !== undefined && estadoMinimo !== null && estadoMinimo !== '') params.estadoMinimo = estadoMinimo;
+      if (precioMaximo !== undefined && precioMaximo !== null && precioMaximo !== '') params.precioMaximo = precioMaximo;
+      if (page !== undefined && page !== null && page !== '') params.page = page;
+      if (size !== undefined && size !== null && size !== '') params.size = size;
+
+      // 2. Realizamos la petición GET a la API
+      // Axios transformará el objeto 'params' en query parameters: ?estadoMinimo=NUEVO&page=0...
+      const response = await api.get('/productos/buscar', { params });
+      
+      const data = response.data;
+
+      // 3. Extraemos exclusivamente el array de productos de la respuesta anidada
+      if (data && data._embedded && data._embedded.productoDTOList) {
+        return data._embedded.productoDTOList;
+      }
+
+      // Si la búsqueda no arroja resultados o no hay "productoDTOList", devolvemos un array vacío
+      return [];
+
+    } catch (error) {
+      console.error("Error al buscar productos:", error);
+      throw error; // Propagamos el error para manejarlo desde el componente
     }
   }
 };

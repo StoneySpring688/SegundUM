@@ -8,31 +8,28 @@ function Home() {
     const [productos, setProductos] = useState([]);
 
     useEffect(() => {
-        // Función de inicialización para cargar datos de prueba
         const init = async () => {
-            const productosPrueba = Array.from({ length: 10 }, (_, i) => ({
-                id: `prod-${i + 1}`,
-                titulo: `Producto de Ejemplo ${i + 1}`,
-                descripcion: `Esta es una descripción breve del producto ${i + 1} para probar el diseño de la interfaz.`,
-                precio: parseFloat((Math.random() * 200).toFixed(2)),
-                estado: i % 2 === 0 ? "NUEVO" : "USADO",
-                fechaPublicacion: new Date().toISOString(),
-                visualizaciones: Math.floor(Math.random() * 50),
-                envioDisponible: i % 3 !== 0,
-                vendedorId: "vend-001",
-                categoriaId: "cat-001",
-                categoriaNombre: "Electrónica",
-                recogida: {
-                    descripcion: "Calle Mayor, Murcia",
-                    longitud: -1.13,
-                    latitud: 37.98,
-                },
-                vendido: false,
-            }));
-            setProductos(productosPrueba);
-            const categorias = await apiProductos.getAllCategorias();
-            dataService.setCategorias(categorias);
-            console.log(dataService.getCategorias());
+            try {
+                // 1. Cargamos las categorías en memoria (si no estaban ya)
+                const categorias = await apiProductos.getAllCategorias();
+                dataService.setCategorias(categorias);
+                // console.log("Categorías cargadas:", dataService.getCategorias());
+
+                // 2. Cargamos los productos reales de la API
+                // Llamamos a buscarProductos sin filtros, o con paginación inicial
+                const productosReales = await apiProductos.buscarProductos({
+                    page: 0,
+                    size: 12
+                });
+                
+                // 3. Guardamos los productos en el estado para que se rendericen
+                setProductos(productosReales);
+                productosReales.forEach(p => dataService.addProducto(p));
+                console.log("productos almacenados: ", dataService.getProductos())
+            } catch (error) {
+                console.error("Error al inicializar la Home:", error);
+            }
+            
             
         };
 
@@ -73,7 +70,7 @@ function Home() {
                                         <div className="d-flex justify-content-between align-items-center mb-2">
                                             <span className="h4 mb-0 text-primary">{producto.precio} €</span>
                                             {producto.envioDisponible && (
-                                                <Badge pill bg="info" text="dark">Envío gratis</Badge>
+                                                <Badge pill bg="info" text="dark">Envío disponible</Badge>
                                             )}
                                         </div>
                                         

@@ -41,7 +41,11 @@ export const dataService = {
     addProducto: (producto) => {
         // Generamos un ID simple si no tiene uno
         productos.push(producto);
-        console.log("Producto añadido:", producto);
+        //console.log("Producto añadido:", producto);
+    },
+
+    setProductos: (nuevosProductos) => {
+        productos = nuevosProductos;
     },
 
     /**
