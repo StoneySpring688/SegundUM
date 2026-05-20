@@ -20,8 +20,18 @@ export const authService = {
     return response.data; 
   },
 
+  register: async (email,
+                    nombre,
+                    apellidos,
+                    clave,
+                    fechaNacimiento,
+                    telefono) => {
+    const userData = {email, nombre, apellidos, clave, fechaNacimiento, telefono};
+    console.log("Datos de registro:", userData);
+    const response = await api.post("/usuarios/", {}, { params: userData });
+    return response.data;
+  },
 
-  // TODO: Este endpoint habría que implementarlo en el servidor... algún día si eso
   logout: async () => {
     const response = await api.post("/auth/logout");
     return response.data;

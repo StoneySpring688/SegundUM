@@ -33,7 +33,7 @@ function Header() {
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                             <Nav.Link as={Link} to="/profile" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
                             <Nav.Link as={Link} to="/home/" onClick={handleClose}>Home</Nav.Link>
-                            {/*El resto de links*/}
+                            {/*TODO poner el resto de links aquí*/}
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

@@ -1,54 +1,93 @@
 import React, { useState } from "react";
 import { authService } from "../js/authService";
 import { useNavigate } from "react-router";
-import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
+import { Form, Button, Alert, Container, Row, Col, Card } from 'react-bootstrap';
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  
-  const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [clave, setClave] = useState("");
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError(null);
+    const navigate = useNavigate();
 
-    try {
-      
-      await authService.login(email, password);
-      
-      console.log("Login exitoso. Cookie recibida.");
-      
-      navigate("/home");
-      
-    } catch (err) {
-      setError("Credenciales incorrectas. Inténtalo de nuevo.");
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setLoading(true);
+
+        try {
+
+            await authService.login(email, clave);
+
+            console.log("Login exitoso. Cookie recibida.");
+
+            navigate("/home");
+
+        } catch (err) {
+            setError("Credenciales incorrectas. Inténtalo de nuevo.");
+        }finally{
+            setLoading(false);
+        }
+    };
+
+    const handleRegister = () => {
+        navigate("/register")
     }
-  };
 
-  return (
-    <form onSubmit={handleLogin}>
-      <h2>Iniciar Sesión</h2>
-      {error && <Alert variant="warning">{error}</Alert>}
-      
-      <input 
-        type="email" 
-        placeholder="Correo" 
-        value={email} 
-        onChange={(e) => setEmail(e.target.value)} 
-      />
-      <input 
-        type="password" 
-        placeholder="Contraseña" 
-        value={password} 
-        onChange={(e) => setPassword(e.target.value)} 
-      />
-      
-    <Button type="submit" variant="primary">Login</Button>
-    </form>
-  );
+    return (
+        <>
+            <Container className="mt-5">
+                <Row className="justify-content-center">
+                    <Col md={8} lg={6}>
+                        <Card className="shadow">
+                            <Card.Body className="p-4">
+                                <h2 className="text-center mb-4">Login</h2>
+
+                                {error && <Alert variant="danger">{error}</Alert>}
+
+                                <Form onSubmit={handleLogin}>
+                                    <Form.Group className="mb-3" controlId="formEmail">
+                                        <Form.Label>Correo Electrónico</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="ejemplo@correo.com"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="formPassword">
+                                        <Form.Label>Contraseña</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Mínimo 6 caracteres"
+                                            value={clave}
+                                            onChange={(e) => setClave(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+
+                                    <div className="d-grid gap-2 mt-4">
+                                        <Button type="submit" variant="primary" size="lg" disabled={loading}>
+                                            {loading ? 'Iniciando Sesión...' : 'Iniciar Sesión'}
+                                        </Button>
+                                        <Button variant="link" onClick={handleRegister}>
+                                            ¿No tienes cuenta? Registrate
+                                        </Button>
+                                    </div>
+                                </Form>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+
+            
+        </>
+
+    );
 }
 
 export default Login;
