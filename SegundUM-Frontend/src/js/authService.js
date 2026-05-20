@@ -24,15 +24,21 @@ export const authService = {
     return response.data; 
   },
 
+  /**
+   * Registra un nuevo usuario enviando los datos en el cuerpo (body) como JSON.
+   */
   register: async (email,
                     nombre,
                     apellidos,
                     clave,
                     fechaNacimiento,
                     telefono) => {
-    const userData = {email, nombre, apellidos, clave, fechaNacimiento, telefono};
-    console.log("Datos de registro:", userData);
-    const response = await api.post("/usuarios/", {}, { params: userData });
+    const userData = { email, nombre, apellidos, clave, fechaNacimiento, telefono };
+    
+    console.log("Enviando datos de registro en el BODY (JSON):", userData);
+    
+    const response = await api.post("/usuarios/", userData);
+    
     return response.data;
   },
 

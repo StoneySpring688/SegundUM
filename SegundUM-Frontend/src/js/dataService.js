@@ -10,6 +10,8 @@ let usuario = {};
 
 let productos = [];
 
+let categorias = [];
+
 export const dataService = {
     /**
      * Devuelve los datos del usuario actual.
@@ -55,5 +57,19 @@ export const dataService = {
         } else {
             console.warn(`No se encontró ningún producto con ID ${id}.`);
         }
+    },
+
+     /**
+     * Devuelve las categorias.
+     */
+    getCategorias: () => {
+        return categorias;
+    },
+
+    /**
+     * Añade el array de categorias a memoria.
+    */
+    setCategorias: (nuevasCategorias) => {
+        categorias = nuevasCategorias;
     }
 };
