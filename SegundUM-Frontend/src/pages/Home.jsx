@@ -36,6 +36,12 @@ function Home() {
         init();
     }, []);
 
+    async function handleDetails(id){
+        //console.log("Se ha hecho click en el producto con ID:", dataService.getProductoById(id));
+        const producto = await apiProductos.getProductoById(id);
+        console.log("Producto: ", producto);
+    }
+
     return (
         <div className="bg-light" style={{ minHeight: '100vh' }}>
             <Header />
@@ -85,7 +91,7 @@ function Home() {
                                         </div>
 
                                         {/*TODO añadir onClick con una función para ir a la vista de detalles*/}
-                                        <Button variant="primary" className="w-100">
+                                        <Button variant="primary" className="w-100" onClick={() => handleDetails(producto.id)}>
                                             Ver Detalles
                                         </Button>
                                     </div>

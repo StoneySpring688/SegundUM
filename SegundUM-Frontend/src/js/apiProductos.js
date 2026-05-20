@@ -82,10 +82,8 @@ export const apiProductos = {
    */
   buscarProductos: async ({ categoriaId, texto, estadoMinimo, precioMaximo, page, size } = {}) => {
     try {
-      // 1. Construimos el objeto de parámetros dinámicamente
       const params = {};
 
-      // Solo añadimos al objeto 'params' aquellos valores que existan y no estén vacíos
       if (categoriaId !== undefined && categoriaId !== null && categoriaId !== '') params.categoriaId = categoriaId;
       if (texto !== undefined && texto !== null && texto !== '') params.texto = texto;
       if (estadoMinimo !== undefined && estadoMinimo !== null && estadoMinimo !== '') params.estadoMinimo = estadoMinimo;
@@ -93,23 +91,39 @@ export const apiProductos = {
       if (page !== undefined && page !== null && page !== '') params.page = page;
       if (size !== undefined && size !== null && size !== '') params.size = size;
 
-      // 2. Realizamos la petición GET a la API
-      // Axios transformará el objeto 'params' en query parameters: ?estadoMinimo=NUEVO&page=0...
       const response = await api.get('/productos/buscar', { params });
       
       const data = response.data;
 
-      // 3. Extraemos exclusivamente el array de productos de la respuesta anidada
       if (data && data._embedded && data._embedded.productoDTOList) {
         return data._embedded.productoDTOList;
       }
 
-      // Si la búsqueda no arroja resultados o no hay "productoDTOList", devolvemos un array vacío
       return [];
 
     } catch (error) {
       console.error("Error al buscar productos:", error);
       throw error; // Propagamos el error para manejarlo desde el componente
+    }
+  },
+
+  /**
+   * Obtiene un producto específico por su ID, limpiando la metainformación.
+   * * @param {string} id - El ID del producto a buscar
+   * @returns {Promise<Object>} Objeto con los datos del producto (DTO) limpio
+   */
+  getProductoById: async (id) => {
+    try {
+      const response = await api.get(`/productos/${id}`);
+      const data = response.data;
+
+      if (!data) return null;
+
+      return data;
+
+    } catch (error) {
+      console.error(`Error al obtener el producto con ID ${id}:`, error);
+      throw error;
     }
   }
 };

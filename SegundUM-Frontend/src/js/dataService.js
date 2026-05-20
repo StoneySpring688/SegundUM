@@ -63,6 +63,10 @@ export const dataService = {
         }
     },
 
+    getProductoById: (id) => {
+        return productos.find(p => p.id === id);
+    },
+
      /**
      * Devuelve las categorias.
      */
