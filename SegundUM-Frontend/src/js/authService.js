@@ -1,4 +1,5 @@
 import api from "./axiosConfig";
+import { apiUsuarios } from "./apiUsuarios";
 
 export const authService = {
   /**
@@ -16,6 +17,9 @@ export const authService = {
     console.log(credenciales);
     
     const response = await api.post("/auth/login", credenciales);
+    console.log(response);
+    const idUsuario = response.data?.id;
+    console.log(idUsuario);
     
     return response.data; 
   },

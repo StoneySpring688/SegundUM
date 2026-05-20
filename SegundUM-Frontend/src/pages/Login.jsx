@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { authService } from "../js/authService";
+import { apiUsuarios } from "../js/apiUsuarios";
+import { dataService } from "../js/dataService";
 import { useNavigate } from "react-router";
 import { Form, Button, Alert, Container, Row, Col, Card } from 'react-bootstrap';
 
@@ -18,9 +20,10 @@ function Login() {
 
         try {
 
-            await authService.login(email, clave);
-
-            console.log("Login exitoso. Cookie recibida.");
+            const data = await authService.login(email, clave);
+            const usuario = await apiUsuarios.getById(data.id);
+            dataService.setUsuario(usuario);
+            console.log("usuario almacenado: ", dataService.getUsuario());
 
             navigate("/home");
 
