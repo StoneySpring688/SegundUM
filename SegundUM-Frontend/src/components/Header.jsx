@@ -41,6 +41,7 @@ function Header() {
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                             <Nav.Link as={Link} to="/profile" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
                             <Nav.Link as={Link} to="/home/" onClick={handleClose}>Home</Nav.Link>
+                            <Nav.Link as={Link} to="/buscar/" onClick={handleClose}>Buscar Productos</Nav.Link>
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             {/*TODO poner el resto de links aquí*/}
                         </Nav>
