@@ -22,11 +22,6 @@ function Compras() {
         init();
     }, []);
 
-    const actualizarProductos = (nuevosCompras, paginas) => {
-        setProductos(nuevosCompras);
-        setPaginas(paginas);
-    }
-
     const cambiarPagina = async (nuevaPagina) => {
         console.log("El usuario quiere ir a la página:", nuevaPagina);
         try {

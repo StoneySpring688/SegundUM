@@ -99,7 +99,7 @@ public class CompraventaRestController implements CompraventaApi {
         return pagedResourcesAssembler.toModel(paginaDTO);
     }
 
-    @GetMapping("/vendedor/{idVendedor}")
+    @GetMapping("/vendedor")
     @PreAuthorize("hasAuthority('USUARIO')")
     public PagedModel<EntityModel<CompraventaDTO>> recuperarVentasDeUsuario(
             @ParameterObject Pageable paginacion) throws Exception {
