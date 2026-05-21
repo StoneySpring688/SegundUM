@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Container, Col, Row, Card, Button, Badge, Spinner, Alert } from "react-bootstrap";
 import Header from "../components/Header";
+import ModalCustom from "../components/Modal";
 import { dataService } from "../js/dataService";
 import { apiProductos } from "../js/apiProductos";
-import api from "../js/axiosConfig";
+import { apiCompraventas } from "../js/apiCompraventas";
 
 function Producto() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ function Producto() {
 
   const [producto, setProducto] = useState(null);
   const [cargando, setCargando] = useState(true);
+  const [comprado, setComprado] = useState(false);
   const [error, setError] = useState(null);
 
 
@@ -48,6 +50,12 @@ function Producto() {
     }
   }, [id]);
 
+  const hacerCompraventa = async () => {
+    apiCompraventas.hacerCompraventas(id);
+    setComprado(true);
+
+  }
+
   if (cargando) {
     return (
       <div className="bg-light" style={{ minHeight: '100vh' }}>
@@ -81,6 +89,10 @@ function Producto() {
   return (
     <div className="bg-light" style={{ minHeight: '100vh' }}>
       <Header />
+
+      {comprado &&(<Alert key="success" variant="success">
+          Compra realizada con exito
+        </Alert>)}
 
       <Container className="py-5">
 
@@ -151,9 +163,14 @@ function Producto() {
                   </Row>
                 </div>
 
-                <Button variant="success" className="w-100 mt-4 size-lg">
-                  Comprar
-                </Button>
+                <ModalCustom
+                  textoBoton="Comprar" 
+                  tituloModal="Confirmación de Compra" 
+                  bodyModal="Quieres comprar este producto" 
+                  textoBotonSecundario="Cancelar" 
+                  textoBotonPrincipal="Comprar" 
+                  onClickBotonPrincipal={hacerCompraventa}
+                />
               </Card.Body>
             </Col>
           </Row>

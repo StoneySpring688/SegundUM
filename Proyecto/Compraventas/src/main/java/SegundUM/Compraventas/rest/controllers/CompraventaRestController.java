@@ -45,20 +45,22 @@ public class CompraventaRestController implements CompraventaApi {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('USUARIO') and #dto.idComprador == authentication.principal")
+    @PreAuthorize("hasAuthority('USUARIO')")
     public ResponseEntity<EntityModel<CompraventaDTO>> realizarCompra(@Valid @RequestBody NuevaCompraventaDTO dto) throws Exception {
         
-        logger.info("Petición REST para realizar compra. Producto: {}, Comprador: {}", dto.getIdProducto(), dto.getIdComprador());
-        
-        // El token crudo (sin "Bearer ") lo almacena el filtro JWT como credencial
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String idUsuario = (String) auth.getPrincipal();
         String token = (String) auth.getCredentials();
+    	
+        logger.info("Petición REST para realizar compra. Producto: {}, Comprador: {}", dto.getIdProducto(), idUsuario);
+        
+        
         
         Compraventa guardada;
         
             guardada = servicioCompraventa.realizarCompra(
                     dto.getIdProducto(), 
-                    dto.getIdComprador(), 
+                    idUsuario, 
                     token
             );
             
@@ -84,13 +86,14 @@ public class CompraventaRestController implements CompraventaApi {
         
     }
 
-    @GetMapping("/comprador/{idComprador}")
-    @PreAuthorize("hasAuthority('USUARIO') and #idComprador == authentication.principal")
-    public PagedModel<EntityModel<CompraventaDTO>> recuperarComprasDeUsuario(
-            @PathVariable String idComprador,
-            @ParameterObject Pageable paginacion) throws Exception {
+    @GetMapping()
+    @PreAuthorize("hasAuthority('USUARIO')")
+    public PagedModel<EntityModel<CompraventaDTO>> recuperarComprasDeUsuario(@ParameterObject Pageable paginacion) throws Exception {
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String idUsuario = (String) auth.getPrincipal();
 
-        Page<Compraventa> pagina = servicioCompraventa.recuperarComprasDeUsuario(idComprador, paginacion);
+        Page<Compraventa> pagina = servicioCompraventa.recuperarComprasDeUsuario(idUsuario, paginacion);
         Page<CompraventaDTO> paginaDTO = pagina.map(CompraventaDTO::fromEntity);
 
         return pagedResourcesAssembler.toModel(paginaDTO);

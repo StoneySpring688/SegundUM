@@ -1,5 +1,6 @@
 import { Card, Button, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router";
+import { dataService } from "../js/dataService";
 
 function TarjetaProducto({ producto }) {
 

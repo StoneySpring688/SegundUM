@@ -18,7 +18,7 @@ public interface CompraventaApi {
     ResponseEntity<EntityModel<CompraventaDTO>> realizarCompra(NuevaCompraventaDTO dto) throws Exception;
 
     @Operation(summary = "Historial de compras", description = "Devuelve paginadas todas las compras realizadas por un usuario")
-    PagedModel<EntityModel<CompraventaDTO>> recuperarComprasDeUsuario(String idComprador, Pageable paginacion) throws Exception;
+    PagedModel<EntityModel<CompraventaDTO>> recuperarComprasDeUsuario(Pageable paginacion) throws Exception;
 
     @Operation(summary = "Historial de ventas", description = "Devuelve paginadas todas las ventas realizadas por un usuario")
     PagedModel<EntityModel<CompraventaDTO>> recuperarVentasDeUsuario(String idVendedor, Pageable paginacion) throws Exception;
