@@ -36,7 +36,7 @@ public class CategoriaRestController implements CategoriaApi {
     private final ServicioCategorias servicioCategorias;
 
     @Autowired
-    private PagedResourcesAssembler<ResumenCategoria> pagedResourcesAssembler;
+    private PagedResourcesAssembler<CategoriaDTO> pagedResourcesAssembler;
 
     @Autowired
     private CategoriaAssembler categoriaAssembler;
@@ -68,14 +68,14 @@ public class CategoriaRestController implements CategoriaApi {
     }
 
 
-    /** GET /api/categorias — Listado paginado de categorías (resumen) */
+    /** GET /api/categorias — Listado paginado de categorías */
     @GetMapping
-    public PagedModel<EntityModel<ResumenCategoria>> getCategoriasPaginado(
+    public PagedModel<EntityModel<CategoriaDTO>> getCategoriasPaginado(
             @ParameterObject Pageable paginacion) throws Exception {
         logger.info("Peticion recibida: GET /categorias (paginado)");
-        Page<ResumenCategoria> resumen = servicioCategorias.getCategoriasPaginado(paginacion)
-                .map(ResumenCategoria::fromEntity);
-        return pagedResourcesAssembler.toModel(resumen, categoriaAssembler);
+        Page<CategoriaDTO> resumen = servicioCategorias.getCategoriasPaginado(paginacion)
+                .map(CategoriaDTO::fromEntity);
+        return pagedResourcesAssembler.toModel(resumen);
 
     }
 }

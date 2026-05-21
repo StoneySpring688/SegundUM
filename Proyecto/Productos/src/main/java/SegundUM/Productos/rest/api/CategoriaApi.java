@@ -21,5 +21,5 @@ public interface CategoriaApi {
     EntityModel<CategoriaDTO> getCategoria(String id) throws Exception;
 
     @Operation(summary = "Listar categorias", description = "Devuelve paginado el resumen de todas las categorias disponibles")
-    PagedModel<EntityModel<ResumenCategoria>> getCategoriasPaginado(Pageable paginacion) throws Exception;
+    PagedModel<EntityModel<CategoriaDTO>> getCategoriasPaginado(Pageable paginacion) throws Exception;
 }
