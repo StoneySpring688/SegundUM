@@ -3,6 +3,7 @@ import { Container, Nav, Navbar, NavDropdown, Offcanvas, Image } from 'react-boo
 import { useNavigate, Link, NavLink } from 'react-router';
 import profilePic from '../assets/profilePlaceHolder.png'
 import { authService } from '../js/authService';
+import { dataService } from '../js/dataService';
 import './Header.css'
 
 function Header() {
@@ -46,6 +47,7 @@ function Header() {
                             <NavDropdown title="Compraventas" id='compraventas-dopdown'>
                                 <NavDropdown.Item as={Link} to="/compras" onClick={handleClose}>Mis Compras</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/ventas" onClick={handleClose}>Mis Ventas</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/compraventasEntre" onClick={handleClose}>Compraventas entre</NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             {/*TODO poner el resto de links aquí*/}

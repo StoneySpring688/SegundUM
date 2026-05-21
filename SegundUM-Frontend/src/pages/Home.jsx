@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
 import Header from "../components/Header";
 import ListaProductos from "../components/ListaProductos";
 import { apiProductos } from "../js/apiProductos";
+import { apiUsuarios } from "../js/apiUsuarios";
 import {dataService} from "../js/dataService";
 
 function Home() {
@@ -24,6 +25,8 @@ function Home() {
                     size: 12
                 });
                 
+                
+
                 setProductos(productosReales);
                 dataService.setProductos(productosReales);
                 console.log("productos almacenados: ", dataService.getProductos())

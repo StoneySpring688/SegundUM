@@ -58,4 +58,30 @@ export const apiCompraventas = {
             console.error("Error al consultar las compras del usuario: ", error);
         }
     },
+
+    getCompraventas: async (comprador, vendedor, page) => {
+        try {
+            const response = await api.get("/compraventas/entre", {params: {idComprador:comprador, idVendedor:vendedor, page:page }});
+
+            console.log("respuesta: ", response);
+
+            const data = response.data;
+            console.log("respuesta de consulta de compraventas: ", data);
+
+            if (data && data._embedded && data._embedded.compraventaDTOList) {
+                return {
+                    compraventas: data._embedded.compraventaDTOList,
+                    paginas: data.page
+                };
+            }
+
+            return {
+                compraventas: [],
+                paginas: data?.page || null
+            };
+
+        } catch (error) {
+            console.error("Error al consultar las compras del usuario: ", error);
+        }
+    },
 };
