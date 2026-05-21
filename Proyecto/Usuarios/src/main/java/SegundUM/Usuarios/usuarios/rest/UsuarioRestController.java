@@ -144,10 +144,8 @@ public class UsuarioRestController {
     }
 
     @PUT
-    @Path("/{id}")
     @RolesAllowed("USUARIO")
     public Response modificarUsuario(
-            @PathParam("id") String usuarioId,
             NuevoUsuarioDTO dto) throws Exception {
 
         if (dto == null) {
@@ -157,13 +155,7 @@ public class UsuarioRestController {
         Claims claims = (Claims) requestContext.getProperty("claims");
         String idUsuarioAutenticado = claims.getSubject();
 
-        // Solo el propio usuario puede modificar sus datos
-        if (!usuarioId.equals(idUsuarioAutenticado)) {
-            return Response.status(Response.Status.FORBIDDEN)
-                    .entity("No tienes permiso para modificar este usuario.").build();
-        }
-
-        servicioUsuarios.modificarUsuario(usuarioId, dto.nombre, dto.apellidos,
+        servicioUsuarios.modificarUsuario(idUsuarioAutenticado, dto.nombre, dto.apellidos,
                 dto.clave, dto.fechaNacimiento, dto.telefono);
         return Response.noContent().build();
     }

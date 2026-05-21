@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Register from './pages/Register';
 import Producto from './pages/Producto';
 import Buscar from './pages/Buscar';
+import PerfilUsuario from './pages/PerfilUsuario';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Route path='/home/' element={<Home/>}/>
         <Route path="/producto/:id" element={<Producto />} />
         <Route path='/buscar/' element={<Buscar/>}/>
+        <Route path='/user/' element={<PerfilUsuario/>}/>
       </Routes>
     </BrowserRouter>
   )

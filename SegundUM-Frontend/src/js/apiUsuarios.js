@@ -6,7 +6,7 @@ export const apiUsuarios = {
    */
   getById: async () => {
     try {
-      console.log(`Iniciando consulta para obtener el usuario logeado`);
+      //console.log(`Iniciando consulta para obtener el usuario logeado`);
       
       const response = await api.get(`/usuarios/logged`);
       
@@ -14,6 +14,23 @@ export const apiUsuarios = {
       return response.data;
     } catch (error) {
       console.error(`Error al obtener el usuario logeado: `, error);
+      throw error;
+    }
+  },
+  modificarUsuario: async (usuarioModificacion) => {
+    try {
+      console.log("datos para modificar el usuario: ", usuarioModificacion);
+      const usuarioDTO = {
+        email: usuarioModificacion.email,
+        nombre: usuarioModificacion.nombre,
+        apellidos: usuarioModificacion.apellidos,
+        clave: usuarioModificacion.clave,
+        fechaNacimiento: usuarioModificacion.fechaNacimiento,
+        telefono: usuarioModificacion.telefono
+      };
+      api.put("/usuarios", usuarioDTO);
+    } catch (error) {
+      console.log(`Error al modificar el usuario: `, error);
       throw error;
     }
   }

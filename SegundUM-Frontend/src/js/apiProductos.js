@@ -72,7 +72,7 @@ export const apiProductos = {
   /**
    * Busca productos según varios filtros opcionales y paginación.
    * Solo envía en la URL los parámetros que no estén en blanco.
-   * * @param {Object} filtros - Parámetros de búsqueda
+   * @param {Object} filtros - Parámetros de búsqueda
    * @param {string} [filtros.categoriaId] - ID de la categoría a filtrar
    * @param {string} [filtros.texto] - Texto a buscar en el título o descripción
    * @param {string} [filtros.estadoMinimo] - Estado mínimo requerido (ej: 'NUEVO')

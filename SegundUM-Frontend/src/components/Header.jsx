@@ -39,7 +39,7 @@ function Header() {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                            <Nav.Link as={Link} to="/profile" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
+                            <Nav.Link as={Link} to="/user" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
                             <Nav.Link as={Link} to="/home/" onClick={handleClose}>Home</Nav.Link>
                             <Nav.Link as={Link} to="/buscar/" onClick={handleClose}>Buscar Productos</Nav.Link>
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
@@ -47,7 +47,7 @@ function Header() {
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
-                <NavLink as={Link} to='/profile' className="p-0 ms-auto d-none d-sm-inline-block">
+                <NavLink as={Link} to='/user' className="p-0 ms-auto d-none d-sm-inline-block">
                     <img src={profilePic} alt="imagen de perfil" className="profile-img rounded-circle"/>
                 </NavLink>
             </Container>
