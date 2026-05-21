@@ -64,6 +64,7 @@ export const dataService = {
     },
 
     getProductoById: (id) => {
+        console.log("recuperando de memoria producto con id: ", id);
         return productos.find(p => p.id === id);
     },
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
+import { useNavigate } from "react-router";
 import Header from "../components/Header";
 import { apiProductos } from "../js/apiProductos";
 import {dataService} from "../js/dataService";
@@ -7,24 +8,26 @@ import {dataService} from "../js/dataService";
 function Home() {
     const [productos, setProductos] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const init = async () => {
             try {
-                // 1. Cargamos las categorías en memoria (si no estaban ya)
-                const categorias = await apiProductos.getAllCategorias();
-                dataService.setCategorias(categorias);
-                // console.log("Categorías cargadas:", dataService.getCategorias());
-
-                // 2. Cargamos los productos reales de la API
-                // Llamamos a buscarProductos sin filtros, o con paginación inicial
+                let categorias = dataService.getCategorias();
+                if(categorias.length === 0){
+                    const categorias = await apiProductos.getAllCategorias();
+                    dataService.setCategorias(categorias);
+                    console.log("Categorias obtenidas: ", dataService.getCategorias());
+                }
+                console.log("categorias de memoria: ", categorias);
+                
                 const productosReales = await apiProductos.buscarProductos({
                     page: 0,
                     size: 12
                 });
                 
-                // 3. Guardamos los productos en el estado para que se rendericen
                 setProductos(productosReales);
-                productosReales.forEach(p => dataService.addProducto(p));
+                dataService.setProductos(productosReales);
                 console.log("productos almacenados: ", dataService.getProductos())
             } catch (error) {
                 console.error("Error al inicializar la Home:", error);
@@ -38,8 +41,11 @@ function Home() {
 
     async function handleDetails(id){
         //console.log("Se ha hecho click en el producto con ID:", dataService.getProductoById(id));
-        const producto = await apiProductos.getProductoById(id);
-        console.log("Producto: ", producto);
+        //const producto = await apiProductos.getProductoById(id);
+        //console.log("Producto: ", producto);
+
+        // TODO hay que incrementar el numero de visualizaciones en uno.
+        navigate(`/producto/${id}`);
     }
 
     return (
@@ -74,7 +80,7 @@ function Home() {
 
                                     <div className="mt-3">
                                         <div className="d-flex justify-content-between align-items-center mb-2">
-                                            <span className="h4 mb-0 text-primary">{producto.precio} €</span>
+                                            <span className="h4 mb-0 text-primary">{producto.precio} $</span>
                                             {producto.envioDisponible && (
                                                 <Badge pill bg="info" text="dark">Envío disponible</Badge>
                                             )}
@@ -90,7 +96,6 @@ function Home() {
                                             </small>
                                         </div>
 
-                                        {/*TODO añadir onClick con una función para ir a la vista de detalles*/}
                                         <Button variant="primary" className="w-100" onClick={() => handleDetails(producto.id)}>
                                             Ver Detalles
                                         </Button>

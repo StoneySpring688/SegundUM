@@ -119,11 +119,21 @@ export const apiProductos = {
 
       if (!data) return null;
 
+      console.log("produycto recuperado de la api: ", data);
+
       return data;
 
     } catch (error) {
       console.error(`Error al obtener el producto con ID ${id}:`, error);
       throw error;
+    }
+  },
+  registrarVisualizacion: async (id) => {
+    try {
+      const response = await api.put(`/productos/${id}/visualizaciones`);
+      console.log("Visualización registrada para el producto con id: ", id);
+    } catch (error) {
+      console.log(`Error al registrar la visualizacion en el producto con id: ${id}`, error);
     }
   }
 };
