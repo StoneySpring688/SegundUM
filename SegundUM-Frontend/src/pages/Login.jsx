@@ -21,7 +21,7 @@ function Login() {
         try {
 
             const data = await authService.login(email, clave);
-            const usuario = await apiUsuarios.getById(data.id);
+            const usuario = await apiUsuarios.getById();
             dataService.setUsuario(usuario);
             console.log("usuario almacenado: ", dataService.getUsuario());
 

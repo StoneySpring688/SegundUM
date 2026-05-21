@@ -1,6 +1,7 @@
 package SegundUM.Usuarios.usuarios.rest;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
@@ -85,11 +87,18 @@ public class UsuarioRestController {
         return Response.ok(listado).build();
     }
 
+    
+    /**
+     * Recuperar el usuario logeado
+     **/
     @GET
-    @Path("/{id}")
+    @Path("/logged")
     @RolesAllowed("USUARIO")
-    public Response getUsuario(@PathParam("id") String id) throws Exception {
-        logger.info("Petición recibida: GET /usuarios/{}", id);
+    public Response getUsuario(@Context SecurityContext securityContext) throws Exception {
+    	logger.info("obteniendo id de usuario de la cookie");
+    	Claims claims = (Claims) requestContext.getProperty("claims");
+        String id = claims.getSubject();
+        logger.info("Petición recibida: GET /usuarios/logged}", id);
 
         Usuario usuario = servicioUsuarios.getUserById(id);
 
