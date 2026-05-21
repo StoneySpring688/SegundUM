@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Card, ListGroup } from "react-bootstrap";
 import { dataService } from "../js/dataService";
 import { apiProductos } from "../js/apiProductos";
 
-function FormularioFiltros() {
+function FormularioFiltros({ onResultadoBusqueda }) {
   const [categorias, setCategorias] = useState([]);
   const [busquedaCat, setBusquedaCat] = useState("");
   const [mostrarSugerencias, setMostrarSugerencias] = useState(false);
@@ -63,6 +63,7 @@ function FormularioFiltros() {
     try {
         const productosEncontrados = await apiProductos.buscarProductos(filtros);
         console.log("Productos encontrados: ", productosEncontrados);
+        onResultadoBusqueda(productosEncontrados);
     } catch (error) {
         console.error("Error al buscar productos:", error);
     }
