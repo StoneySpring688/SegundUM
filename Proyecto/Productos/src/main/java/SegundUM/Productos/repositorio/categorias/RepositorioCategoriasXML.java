@@ -1,13 +1,10 @@
 package SegundUM.Productos.repositorio.categorias;
 
 import SegundUM.Productos.dominio.Categoria;
-import SegundUM.Productos.repositorio.RepositorioXML;
+import SegundUM.Productos.repositorio.EntidadNoEncontrada;
+import SegundUM.Productos.repositorio.RepositorioException;
 
-public class RepositorioCategoriasXML extends RepositorioXML<Categoria> {
+public interface RepositorioCategoriasXML {
 
-	@Override
-	public Class<Categoria> getClase() {
-		return Categoria.class;
-	}
-	
+    Categoria cargar(String nombreFichero) throws RepositorioException, EntidadNoEncontrada;
 }

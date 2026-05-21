@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/** Manejador OAuth2 que, tras el login con GitHub, emite un JWT y lo entrega en cookie y cuerpo JSON. */
 @Component
 public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 
@@ -55,6 +56,7 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         }
 
         if (usuario != null) {
+            // Construir lista de roles: todos tienen USUARIO; los administradores reciben también ADMINISTRADOR
             List<String> roles = new ArrayList<>();
             roles.add("USUARIO");
             if (usuario.isAdministrador()) {
@@ -86,25 +88,6 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
             logger.warn("Usuario de GitHub no vinculado a SegundUM: {}", githubId);
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Usuario de GitHub no vinculado a SegundUM");
         	
-        	//TODO para desarrollo
-			/*
-			 * DefaultOAuth2User oauthUserOnError = (DefaultOAuth2User)
-			 * authentication.getPrincipal(); Map<String, Object> atributos =
-			 * oauthUserOnError.getAttributes();
-			 * 
-			 * response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			 * response.setContentType("application/json;charset=UTF-8");
-			 * 
-			 * Map<String, Object> errorDebug = new HashMap<>(); errorDebug.put("error",
-			 * "Usuario de GitHub no vinculado en la BD de SegundUM");
-			 * errorDebug.put("instrucciones",
-			 * "Verifica que el 'login' o 'id' de abajo coincida con lo que tienes en tu tabla de usuarios"
-			 * ); errorDebug.put("datos_recibidos_de_github", atributos);
-			 * 
-			 * // 4. Lo escribimos en la pantalla
-			 * response.getWriter().write(objectMapper.writerWithDefaultPrettyPrinter().
-			 * writeValueAsString(errorDebug));
-			 */
         }
     }
 }

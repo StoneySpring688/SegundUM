@@ -8,27 +8,15 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Configuracion de RabbitMQ para el microservicio de Usuarios.
- *
- * Centraliza los parametros de conexion y las suscripciones (bindings).
- *
- * El exchange "bus" y las colas se crean de forma centralizada
- * mediante el script rabbitmq-setup.
- *
- * Esta clase define:
- *   - ConnectionFactory con las credenciales de CloudAMQP
- *   - Suscripciones (bindings) a eventos de otros microservicios
- *
- * Equivalente a las clases @Configuration de Spring en los otros microservicios,
- * pero implementada en Java puro al no usar Spring en este microservicio.
- */
+
+/** Centraliza la configuración de RabbitMQ del microservicio Usuarios: credenciales, exchange, cola y bindings. */
 public class RabbitMQConfigUsuarios {
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQConfigUsuarios.class);
 
     public static final String EXCHANGE_NAME = "bus";
     public static final String QUEUE_NAME = "usuarios";
+    public static final String ROUTING_KEY = "bus.usuarios.";
 
     // --- Suscripciones (patrones de routing key) ---
     private static final String[] BINDINGS = {
@@ -37,7 +25,6 @@ public class RabbitMQConfigUsuarios {
             "bus.productos.producto-eliminado"
     };
 
-    // Credenciales RabbitMQ (sobreescribibles con variables de entorno)
     private static final String HOST = env("RABBITMQ_HOST", "rat.rmq2.cloudamqp.com");
     private static final int PORT = Integer.parseInt(env("RABBITMQ_PORT", "5671"));
     private static final String USERNAME = env("RABBITMQ_USERNAME", "cfrvyzor");
@@ -50,10 +37,6 @@ public class RabbitMQConfigUsuarios {
         return value != null ? value : defaultValue;
     }
 
-    /**
-     * Crea y devuelve una ConnectionFactory configurada con las credenciales de RabbitMQ.
-     * En Docker se usa sin SSL (RabbitMQ local); en produccion con SSL (CloudAMQP).
-     */
     public static ConnectionFactory crearConnectionFactory() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(HOST);
@@ -72,10 +55,6 @@ public class RabbitMQConfigUsuarios {
         return factory;
     }
 
-    /**
-     * Configura los bindings (suscripciones) de la cola de usuarios
-     * al exchange "bus" para recibir eventos de compraventas y productos.
-     */
     public static void configurarBindings(Channel channel) throws IOException {
         for (String pattern : BINDINGS) {
             channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, pattern);

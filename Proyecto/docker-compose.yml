@@ -3,17 +3,6 @@ name: segundum
 
 
 services:
-
-
-
-  # ========================
-
-  # Infraestructura
-
-  # ========================
-
-
-
   mysql:
 
     image: mysql:8.4
@@ -111,22 +100,13 @@ services:
       retries: 10
 
 
-
-  # ========================
-
-  # Microservicios
-
-  # ========================
-
-
-
   productos:
 
     build:
 
       context: ./Productos
 
-    container_name: segundum-productos
+    container_name: segundum-productos_v1
 
     ports:
 
@@ -156,6 +136,8 @@ services:
 
       SPRING_RABBITMQ_SSL_ENABLED: "false"
 
+      API_USUARIOS_URL: http://usuarios:8081/api/usuarios/
+
     depends_on:
 
       mysql:
@@ -174,7 +156,7 @@ services:
 
       context: ./Usuarios
 
-    container_name: segundum-usuarios
+    container_name: segundum-usuarios_v1
 
     ports:
 
@@ -222,7 +204,7 @@ services:
 
       context: ./Compraventas
 
-    container_name: segundum-compraventas
+    container_name: segundum-compraventas_v1
 
     ports:
 
@@ -284,7 +266,7 @@ services:
 
       context: ./pasarela
 
-    container_name: segundum-pasarela
+    container_name: segundum-pasarela_v1
 
     ports:
 

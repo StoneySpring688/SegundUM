@@ -1,7 +1,7 @@
 package SegundUM.Productos.servicio.productos;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import SegundUM.Productos.dominio.EstadoProducto;
 import SegundUM.Productos.dominio.LugarRecogida;
 import SegundUM.Productos.dominio.Producto;
-import SegundUM.Productos.dominio.ResumenProducto;
+import SegundUM.Productos.rest.ResumenProducto;
 import SegundUM.Productos.repositorio.EntidadNoEncontrada;
 
 
@@ -31,11 +31,6 @@ public interface ServicioProductos {
     void asignarLugarRecogida(String productoId, String descripcion, Double longitud, Double latitud) throws EntidadNoEncontrada;
 
     /**
-     * Modifica precio y/o descripción del producto. Parámetros nulos no se modifican.
-     */
-    void modificarProducto(String productoId, BigDecimal nuevoPrecio, String nuevaDescripcion) throws EntidadNoEncontrada;
-
-    /**
      * Incrementa en 1 el contador de visualizaciones.
      */
     void anadirVisualizacion(String productoId) throws EntidadNoEncontrada;
@@ -49,28 +44,21 @@ public interface ServicioProductos {
     /**
      * Historial del mes de un vendedor: devuelve resumen ordenado por visualizaciones (desc).
      */
-    @Deprecated
-    List<ResumenProducto> historialMesVendedor(int mes, int anio, String emailVendedor) throws EntidadNoEncontrada;
-    Page<ResumenProducto> historialMesVendedor(int mes, int anio, String emailVendedor, Pageable pageable);
+    Page<ResumenProducto> historialMesVendedor(int mes, int anio, String emailVendedor, Pageable pageable) throws IOException;
 
     /**
      * Historial del mes de: devuelve resumen ordenado por visualizaciones (desc).
      */
-    @Deprecated
-    List<ResumenProducto> historialMes(int mes, int anio);
     Page<ResumenProducto> historialMes(int mes, int anio, Pageable pageable);
 
     /**
      * Buscar productos con los criterios opcionales.
      */
-    @Deprecated
-    List<Producto> buscarProductos(String categoriaId, String texto, EstadoProducto estadoMinimo, BigDecimal precioMaximo);
     Page<Producto> buscarProductos(String categoriaId, String texto, EstadoProducto estadoMinimo, BigDecimal precioMaximo, Pageable pageable);
 
     /**
      * Recupera los productos publicados por un vendedor específico.
      */
-    List<Producto> getProductosPorVendedor(String vendedorId);
     Page<Producto> getProductosPorVendedor(String vendedorId, Pageable pageable);
 
     /**

@@ -9,6 +9,7 @@ import SegundUM.Compraventas.puertos.PuertoAutenticacion;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
+/** Adaptador de salida que realiza el login contra el microservicio de Usuarios via Retrofit. */
 @Component
 @ConditionalOnProperty(name="usuarios.adaptador", havingValue="retrofit")
 public class AdaptadorAuthRetrofit implements PuertoAutenticacion {
@@ -32,7 +33,7 @@ public class AdaptadorAuthRetrofit implements PuertoAutenticacion {
             }
 
             String token = respuesta.body().string();
-            // El token llega como JSON string con comillas ("eyJ..."), hay que quitarlas
+            // El token llega como JSON string con comillas, hay que quitarlas
             if (token.startsWith("\"") && token.endsWith("\"")) {
                 token = token.substring(1, token.length() - 1);
             }

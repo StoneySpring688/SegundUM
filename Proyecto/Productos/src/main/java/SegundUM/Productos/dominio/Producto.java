@@ -2,14 +2,14 @@ package SegundUM.Productos.dominio;
 
 import javax.persistence.*;
 
-import SegundUM.Productos.repositorio.Identificable;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/** Entidad de dominio que representa un artículo publicado en la plataforma de compraventa. */
 @Entity
 @Table(name = "productos")
-public class Producto implements Identificable {
+public class Producto  {
     
     @Id
     private String id;
@@ -77,13 +77,10 @@ public class Producto implements Identificable {
         this.visualizaciones++;
     }
     
-    // Getters y setters (implementa Identificable)
-    @Override
     public String getId() {
         return id;
     }
-    
-    @Override
+
     public void setId(String id) {
         this.id = id;
     }

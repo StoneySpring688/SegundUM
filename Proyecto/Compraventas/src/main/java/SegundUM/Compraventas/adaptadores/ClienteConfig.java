@@ -1,7 +1,6 @@
 package SegundUM.Compraventas.adaptadores;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,22 +12,15 @@ import SegundUM.Compraventas.adaptadores.Retrofit.ApiUsuariosRetrofit;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/** Configuración Spring que instancia los clientes HTTP (RestTemplate y Retrofit) usados por los adaptadores de salida. */
 @Configuration
 public class ClienteConfig {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClienteConfig.class);
-
-    /**
-     * Rest Template Bean para Spring
-     **/
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
-    /**
-     * Retrofit Bean para api de Productos
-     **/
     @Value("${api.productos.url}")
     private String productosBaseUrl;
     
@@ -43,12 +35,8 @@ public class ClienteConfig {
     }
     
     
-    /**
-	 * Retrofit Bean para api de Usuarios
-	 **/
     @Value("${api.usuarios.url}")
-    private String usuariosBaseUrl;
-    
+    private String usuariosBaseUrl; 
     @Bean
     public ApiUsuariosRetrofit apiUsuariosRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -59,9 +47,6 @@ public class ClienteConfig {
         return retrofit.create(ApiUsuariosRetrofit.class);
     }
     
-    /**
-     * Retrofit Bean para api de Auth (login)
-     **/
     @Value("${api.usuarios.auth.url}")
     private String usuariosAuthUrl;
     

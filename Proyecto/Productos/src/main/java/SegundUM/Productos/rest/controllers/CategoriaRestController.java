@@ -1,5 +1,7 @@
 package SegundUM.Productos.rest.controllers;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,38 +10,36 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 
-import SegundUM.Productos.repositorio.EntidadNoEncontrada;
-import SegundUM.Productos.rest.docs.CategoriasApi;
+import SegundUM.Productos.rest.CategoriaAssembler;
+import SegundUM.Productos.rest.ResumenCategoria;
+import SegundUM.Productos.rest.api.CategoriaApi;
 import SegundUM.Productos.rest.dto.CategoriaDTO;
-import SegundUM.Productos.servicio.ServicioException;
 import SegundUM.Productos.servicio.categorias.ServicioCategorias;
 
-/**
- * Controlador REST para la gestión de categorías de productos.
- *
- * Expone operaciones de consulta sobre el árbol de categorías.
- *
- * Base path: /api/categorias
- */
+import org.springdoc.api.annotations.ParameterObject;
+
+/** Controlador REST que expone la API de categorías con soporte HATEOAS. */
 @RestController
 @RequestMapping("/api/categorias")
-public class CategoriaRestController implements CategoriasApi {
+public class CategoriaRestController implements CategoriaApi {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoriaRestController.class);
 
     private final ServicioCategorias servicioCategorias;
-    
+
     @Autowired
-    private PagedResourcesAssembler<CategoriaDTO> pagedResourcesAssembler;
+    private PagedResourcesAssembler<ResumenCategoria> pagedResourcesAssembler;
+
+    @Autowired
+    private CategoriaAssembler categoriaAssembler;
 
     @Autowired
     public CategoriaRestController(ServicioCategorias servicioCategorias) {
@@ -47,46 +47,35 @@ public class CategoriaRestController implements CategoriasApi {
     }
 
     /** POST /api/categorias/cargar — Carga masiva de categorías (ADMIN) */
-    @Override
     @PostMapping("/")
     @PreAuthorize("hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<String> cargarTodas() throws ServicioException {
+    public ResponseEntity<String> cargarTodas() throws Exception {
         logger.info("Peticion recibida: POST /api/categorias/cargar (ADMIN)");
+        
         int totalCargadas = servicioCategorias.cargarTodas();
         return ResponseEntity.ok("Se han cargado " + totalCargadas + " ficheros de categorías correctamente.");
     }
 
+
     /** GET /categorias/{id} — Obtener una categoría por ID */
     @GetMapping("/{id}")
-    public EntityModel<CategoriaDTO> getCategoria(@PathVariable String id) throws ServicioException, EntidadNoEncontrada {
+    public EntityModel<CategoriaDTO> getCategoria(@PathVariable String id) throws Exception {
         logger.info("Peticion recibida: GET /categorias/{}", id);
-        return EntityModel.of(CategoriaDTO.fromEntity(servicioCategorias.getCategoriaById(id)))
-        		.add(
-        				WebMvcLinkBuilder.linkTo(
-        						WebMvcLinkBuilder.methodOn(CategoriaRestController.class).getCategoria(id)
-        						)
-        				.withSelfRel()
-        				);
-        
+        CategoriaDTO dto = CategoriaDTO.fromEntity(servicioCategorias.getCategoriaById(id));
+        return EntityModel.of(dto,
+                linkTo(methodOn(CategoriaRestController.class).getCategoria(id)).withSelfRel(),
+                linkTo(methodOn(CategoriaRestController.class).getCategoriasPaginado(null)).withRel("todas"));
     }
 
-    /** GET /categorias/ — Listar todas las categorías
-     *  <br>
-     *  Muestra las categorias como la raíz y sus hijas, para evitar duplicidad (si no, no funciona con el swagger ui)*/
-    /*@GetMapping
-    public ResponseEntity<List<CategoriaDTO>> getCategorias() throws ServicioException {
-    	List<CategoriaDTO> categoriasDTO = servicioCategorias.getCategorias().stream()
-    			.filter(c -> c.getCategoriaPadre() == null)
-    			.map(CategoriaDTO::fromEntity)
-    			.toList();
-        return ResponseEntity.ok(categoriasDTO);  
-    }*/
-    @Override
-    @GetMapping("/")
-    public PagedModel<EntityModel<CategoriaDTO>> getCategoriasPaginado(Pageable paginacion) throws ServicioException {
-    	logger.info("Peticion recibida: GET /categorias (paginado)");
-    	Page<CategoriaDTO> categoriasDTO = servicioCategorias.getCategoriasPaginado(paginacion)
-    			.map(CategoriaDTO::fromEntity);
-        return pagedResourcesAssembler.toModel(categoriasDTO);
+
+    /** GET /api/categorias — Listado paginado de categorías (resumen) */
+    @GetMapping
+    public PagedModel<EntityModel<ResumenCategoria>> getCategoriasPaginado(
+            @ParameterObject Pageable paginacion) throws Exception {
+        logger.info("Peticion recibida: GET /categorias (paginado)");
+        Page<ResumenCategoria> resumen = servicioCategorias.getCategoriasPaginado(paginacion)
+                .map(ResumenCategoria::fromEntity);
+        return pagedResourcesAssembler.toModel(resumen, categoriaAssembler);
+
     }
 }

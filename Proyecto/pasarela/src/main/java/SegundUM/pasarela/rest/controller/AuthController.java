@@ -1,6 +1,7 @@
 package SegundUM.pasarela.rest.controller;
 
 import SegundUM.pasarela.puertos.PuertoUsuarios;
+import SegundUM.pasarela.rest.api.AuthApi;
 import SegundUM.pasarela.rest.dto.LoginRequest;
 import SegundUM.pasarela.rest.dto.LoginResponse;
 import SegundUM.pasarela.rest.dto.UsuarioDTO;
@@ -14,19 +15,20 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Controlador REST que expone los endpoints de login/logout con credenciales propias y emite JWT. */
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController implements AuthApi {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final PuertoUsuarios puertoUsuarios;
     private final JwtUtils jwtUtils;
-    private HttpServletResponse httpResponse;
 
     @Autowired
     public AuthController(PuertoUsuarios puertoUsuarios, JwtUtils jwtUtils) {
@@ -35,13 +37,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) throws IOException {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
         logger.info("Peticion de login recibida para email: {}", loginRequest.getEmail());
 
         UsuarioDTO usuario = puertoUsuarios.verificarCredenciales(
                 loginRequest.getEmail(), loginRequest.getClave());
 
         if (usuario != null) {
+            // Construir lista de roles: todos tienen USUARIO; los administradores reciben también ADMINISTRADOR
             List<String> roles = new ArrayList<>();
             roles.add("USUARIO");
             if (usuario.isAdministrador()) {
@@ -50,12 +53,12 @@ public class AuthController {
 
             String token = jwtUtils.generateToken(usuario.getId(), usuario.getNombreCompleto(), roles);
 
-            // Enviar token en cookie
+            // Enviar el token en cookie HTTP-Only además de en el cuerpo de la respuesta
             Cookie jwtCookie = new Cookie("jwt", token);
             jwtCookie.setHttpOnly(true);
             jwtCookie.setPath("/");
             jwtCookie.setMaxAge((int) (JwtUtils.EXPIRATION_TIME / 1000));
-            httpResponse.addCookie(jwtCookie);
+            response.addCookie(jwtCookie);
 
             logger.info("Login exitoso para usuario: {}", usuario.getId());
             LoginResponse responseBody = new LoginResponse(token, usuario.getId(), usuario.getNombreCompleto(), roles);

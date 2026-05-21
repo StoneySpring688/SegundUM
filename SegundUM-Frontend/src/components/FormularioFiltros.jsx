@@ -61,7 +61,8 @@ function FormularioFiltros({ onResultadoBusqueda }) {
     e.preventDefault();
     console.log("filtros de busqueda: ", filtros);
     try {
-        const {paginas, productos: productosEncontrados} = await apiProductos.buscarProductos(filtros);
+        const filtrosN = {...filtros, size: 1};
+        const {paginas, productos: productosEncontrados} = await apiProductos.buscarProductos(filtrosN); // TODO volver a dejar solo filtos, (quitar la N del final)
         console.log("Productos encontrados: ", productosEncontrados);
         console.log("paginas encontradas para la busqueda: ", paginas);
         onResultadoBusqueda(productosEncontrados, paginas);

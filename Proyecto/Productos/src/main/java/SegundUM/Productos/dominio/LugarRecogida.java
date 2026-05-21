@@ -3,6 +3,7 @@ package SegundUM.Productos.dominio;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+/** Objeto de valor embebido que almacena la ubicación física de recogida de un producto. */
 @Embeddable
 public class LugarRecogida {
     

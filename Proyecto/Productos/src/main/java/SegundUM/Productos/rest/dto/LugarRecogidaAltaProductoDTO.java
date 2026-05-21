@@ -1,7 +1,5 @@
 package SegundUM.Productos.rest.dto;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -10,8 +8,7 @@ import javax.validation.constraints.Size;
 
 import SegundUM.Productos.dominio.LugarRecogida;
 
-public class LugarRecogidaAltaProductoDTO implements Serializable {
-	private static final long serialVersionUID = 6385697183328793244L;
+public class LugarRecogidaAltaProductoDTO {
 
 	@NotBlank(message = "La descripción del lugar es obligatoria")
     @Size(max = 500, message = "La descripción no puede superar los 500 caracteres")

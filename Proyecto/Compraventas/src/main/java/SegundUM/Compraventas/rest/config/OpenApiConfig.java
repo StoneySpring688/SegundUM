@@ -6,11 +6,12 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.Paths;
-import org.springdoc.core.customizers.OpenApiCustomizer;
+
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 
-import java.util.Collections;
 
 /**
  * Configuración de OpenAPI para habilitar la autenticación JWT en Swagger UI.
@@ -19,7 +20,7 @@ import java.util.Collections;
 @Configuration
 public class OpenApiConfig {
 
-    @org.springframework.beans.factory.annotation.Value("${api.url.gateway:http://localhost:8090}")
+    @Value("${api.url.gateway:http://localhost:8090}")
     private String gatewayUrl;
 
     @Bean
@@ -38,7 +39,7 @@ public class OpenApiConfig {
     }
 
     @Bean
-    public OpenApiCustomizer customerGlobalHeaderOpenApiCustomiser() {
+    public OpenApiCustomiser customerGlobalHeaderOpenApiCustomiser() {
         return openApi -> {
             Paths paths = openApi.getPaths();
             Paths newPaths = new Paths();

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/** Entidad de dominio que representa una transacción de compraventa almacenada en MongoDB. */
 @Document(collection = "compraventas")
 public class Compraventa {
 	@Id

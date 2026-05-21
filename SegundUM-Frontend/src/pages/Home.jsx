@@ -40,7 +40,7 @@ function Home() {
     return (
         <div className="bg-light" style={{ minHeight: '100vh' }}>
             <Header />
-            <ListaProductos lista = {productos}/>
+            <ListaProductos lista = {productos} titulo={"Productos Destacados"}/>
         </div>
     );
 }

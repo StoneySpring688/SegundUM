@@ -10,14 +10,7 @@ import javax.persistence.Persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Helper para gestionar EntityManager de JPA.
- *
- * Las propiedades de conexion se pueden sobreescribir con variables de entorno:
- *   DB_URL      -> javax.persistence.jdbc.url
- *   DB_USER     -> javax.persistence.jdbc.user
- *   DB_PASSWORD  -> javax.persistence.jdbc.password
- */
+/** Gestiona el EntityManagerFactory (singleton) y los EntityManager por hilo (ThreadLocal); acepta sobreescritura de conexión por variables de entorno. */
 public class EntityManagerHelper {
 
     private static final Logger logger = LoggerFactory.getLogger(EntityManagerHelper.class);

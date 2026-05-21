@@ -2,6 +2,7 @@ package SegundUM.Usuarios.usuarios.modelo;
 
 import java.time.LocalDate;
 
+/** Proyección de solo lectura de Usuario con los campos de perfil y contadores de actividad; usada en listados HATEOAS. */
 public class ResumenUsuario {
 
     private String id;

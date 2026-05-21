@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Filtro por petición que valida el JWT (de cabecera o cookie) y carga la autenticación en el contexto de seguridad. */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -38,36 +39,40 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         final String jwt = jwtUtils.extractToken(request);
 
-        String username = null;
-
         if (jwt != null) {
+            String username = null;
             try {
                 username = jwtUtils.extractUsername(jwt);
             } catch (Exception e) {
-                logger.warn("Error al extraer username del JWT: {}", e.getMessage());
+                logger.warn("Token JWT inválido: {}", e.getMessage());
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token JWT inválido");
+                return;
+            }
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                if (jwtUtils.validateToken(jwt)) {
+                    // Extraer claims para convertir los roles en autoridades de Spring Security
+                    Claims claims = Jwts.parser()
+                            .setSigningKey(JwtUtils.SECRET_KEY.getBytes())
+                            .parseClaimsJws(jwt)
+                            .getBody();
+
+                    @SuppressWarnings("unchecked")
+                    List<String> roles = claims.get("roles", List.class);
+
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            username, null, roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                } else {
+                    logger.warn("Token JWT no válido para el usuario: {}", username);
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token JWT no válido");
+                    return;
+                }
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            if (jwtUtils.validateToken(jwt)) {
-
-                Claims claims = Jwts.parser()
-                        .setSigningKey(JwtUtils.SECRET_KEY.getBytes())
-                        .parseClaimsJws(jwt)
-                        .getBody();
-
-                @SuppressWarnings("unchecked")
-                List<String> roles = claims.get("roles", List.class);
-
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                        username, null, roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
-
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-
-            }
-        }
         chain.doFilter(request, response);
     }
 }

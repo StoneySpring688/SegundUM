@@ -6,14 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-/**
- * Punto de entrada del microservicio de Productos.
- *
- * Inicia Spring Boot y muestra información de los endpoints disponibles.
- */
+/** Punto de entrada del microservicio de Compraventas; registra la URL de Swagger al arrancar. */
 @SpringBootApplication(scanBasePackages = "SegundUM.Compraventas")
 @EnableMongoRepositories(basePackages = "SegundUM.Compraventas.repositorio")
 @EntityScan(basePackages = "SegundUM.Compraventas.dominio")
@@ -31,8 +27,8 @@ public class App implements CommandLineRunner {
 	@Override
 	public void run(String... args) {
 		logger.info("=========================================");
-		logger.info("=== Microservicio Compraventas iniciado ===");
-		logger.info("Go to {} for api documentation", BASE_URI);
-		logger.info("=========================================\n");
+		logger.info("=== Microservicio COMPRAVENTAS iniciado ===");
+		logger.info("Documentacion: {}", BASE_URI);
+		logger.info("=========================================");
 	}
 }

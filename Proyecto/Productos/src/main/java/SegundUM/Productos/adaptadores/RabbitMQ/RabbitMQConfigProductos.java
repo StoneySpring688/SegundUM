@@ -28,6 +28,7 @@ public class RabbitMQConfigProductos {
 
     public static final String EXCHANGE_NAME = "bus";
     public static final String QUEUE_NAME = "productos";
+    public static final String ROUTING_KEY = "bus.productos.";
 
     // Referencias al exchange y cola (creados por rabbitmq-setup)
     @Bean
@@ -44,11 +45,13 @@ public class RabbitMQConfigProductos {
 
     @Bean
     public Binding productosBindingCompraventaCreada(Queue productosQueue, TopicExchange busExchange) {
+        logger.info("Binding creado: {} -> {}", "bus.compraventas.compraventa-creada", QUEUE_NAME);
         return BindingBuilder.bind(productosQueue).to(busExchange).with("bus.compraventas.compraventa-creada");
     }
 
     @Bean
     public Binding productosBindingUsuarioEliminado(Queue productosQueue, TopicExchange busExchange) {
+        logger.info("Binding creado: {} -> {}", "bus.usuarios.usuario-eliminado", QUEUE_NAME);
         return BindingBuilder.bind(productosQueue).to(busExchange).with("bus.usuarios.usuario-eliminado");
     }
 

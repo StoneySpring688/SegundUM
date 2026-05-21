@@ -91,6 +91,8 @@ export const apiProductos = {
       if (page !== undefined && page !== null && page !== '') params.page = page;
       if (size !== undefined && size !== null && size !== '') params.size = size;
 
+      console.log("parametros para la busqueda: ", params);
+
       const response = await api.get('/productos/buscar', { params });
       
       const data = response.data;
@@ -98,6 +100,9 @@ export const apiProductos = {
       if (data && data._embedded && data._embedded.productoDTOList) {
         const paginas = data.page;
         const productos = data._embedded.productoDTOList;
+
+        //console.log("productos encontrados: ", productos);
+        //console.log("paginas encontradas: ", paginas);
         return {paginas, productos};
       }
 
