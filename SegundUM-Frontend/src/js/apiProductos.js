@@ -34,11 +34,12 @@ export const apiProductos = {
       while (tieneMasPaginas) {
         console.log(`Solicitando página ${paginaActual} de categorías...`);
         
-        const response = await api.get('/categorias/', {
+        const response = await api.get('/categorias', {
           params: { page: paginaActual } 
         });
 
         const data = response.data;
+        console.log("respuesta consulta categorias: ", response);
 
         if (data && data._embedded && data._embedded.categoriaDTOList) {
           // Extraer las raices y las subcategorias de forma recursiva.
@@ -98,15 +99,16 @@ export const apiProductos = {
       const data = response.data;
 
       if (data && data._embedded && data._embedded.productoDTOList) {
-        const paginas = data.page;
-        const productos = data._embedded.productoDTOList;
-
-        //console.log("productos encontrados: ", productos);
-        //console.log("paginas encontradas: ", paginas);
-        return {paginas, productos};
+        return {
+          productos: data._embedded.productoDTOList,
+          paginas: data.page
+        };
       }
 
-      return [];
+      return { 
+          productos: [], 
+          paginas: data?.page || null 
+      };
 
     } catch (error) {
       console.error("Error al buscar productos:", error);
