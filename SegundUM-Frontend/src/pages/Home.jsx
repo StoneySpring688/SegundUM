@@ -13,7 +13,7 @@ function Home() {
             try {
                 let categorias = dataService.getCategorias();
                 if(categorias.length === 0){
-                    const categorias = await apiProductos.getAllCategorias();
+                    categorias = await apiProductos.getAllCategorias();
                     dataService.setCategorias(categorias);
                     console.log("Categorias obtenidas: ", dataService.getCategorias());
                 }

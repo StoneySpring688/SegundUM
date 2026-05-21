@@ -21,9 +21,9 @@ function FormularioFiltros({ onResultadoBusqueda }) {
 
   useEffect( () => {
     const init = async () => {
-        const cats = dataService.getCategorias();
+        let cats = dataService.getCategorias();
         if(cats.length === 0){
-            const cats = await apiProductos.getAllCategorias();
+            cats = await apiProductos.getAllCategorias();
             dataService.setCategorias(cats);
             console.log("Categorias obtenidas: ", dataService.getCategorias());
         }
