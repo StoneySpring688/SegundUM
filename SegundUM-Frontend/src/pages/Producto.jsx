@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { Container, Card, Button, Badge, Spinner, Alert } from "react-bootstrap";
+import { Container, Col, Row, Card, Button, Badge, Spinner, Alert } from "react-bootstrap";
 import Header from "../components/Header";
 import { dataService } from "../js/dataService";
 import { apiProductos } from "../js/apiProductos";
@@ -54,7 +54,7 @@ function Producto() {
         <Header />
         <Container className="text-center py-5">
           <Spinner animation="border" variant="primary" />
-          <p className="mt-2 text-muted">Cargando detalles del producto...</p>
+          <p className="mt-2 text-muted">Cargando...</p>
         </Container>
       </div>
     );
@@ -81,60 +81,86 @@ function Producto() {
   return (
     <div className="bg-light" style={{ minHeight: '100vh' }}>
       <Header />
+
       <Container className="py-5">
-        <Button variant="outline-secondary" className="mb-4" onClick={() => navigate(-1)}>
-          {"<- Volver atrás"}
-        </Button>
+
+        <Row className="mb-3">
+          <Col xs={12} md={6}>
+            <Button variant="outline-secondary" className="mb-4 px-3 px-md-4 py-2 fs-6 fs-md-5" onClick={() => navigate(-1)}>
+              {"<- Volver atrás"}
+            </Button>
+          </Col>
+          <Col xs={12} md={6} className="text-md-end">
+            {producto.envioDisponible && (
+              <Badge pill bg="info" text="dark" className="p-2 p-md-3 fs-6 fs-md-5">Envío disponible</Badge>
+            )}
+          </Col>
+        </Row>
 
         <Card className="shadow-sm border-0 overflow-hidden">
-          <div className="row g-0">
-            <div className="col-md-6">
-              <Card.Img 
-                src={`https://picsum.photos/seed/${producto.id}/600/400`} 
+          <Row className="g-0">
+            <Col md={6}>
+              <Card.Img
+                src={`https://picsum.photos/seed/${producto.id}/600/400`}
                 alt={producto.titulo}
                 className="h-100 object-fit-cover"
               />
-            </div>
-            <div className="col-md-6">
-              <Card.Body className="p-4 d-flex flex-column h-100">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <Badge bg="primary">{producto.categoriaNombre}</Badge>
-                  <Badge bg={producto.estado === "NUEVO" ? "success" : "warning"} text={producto.estado === "NUEVO" ? "white" : "dark"}>
-                    {producto.estado.replace("_", " ")}
-                  </Badge>
-                </div>
+            </Col>
+            <Col md={6}>
+              <Card.Body className="p-4">
+
+                <Row className="mb-3">
+                  <Col>
+                    <Badge bg="primary">{producto.categoriaNombre}</Badge>
+                  </Col>
+                  <Col className="text-end">
+                    <Badge bg={producto.estado === "NUEVO" ? "success" : "warning"} text={producto.estado === "NUEVO" ? "white" : "dark"}>
+                      {producto.estado.replace("_", " ")}
+                    </Badge>
+                  </Col>
+                </Row>
 
                 <Card.Title className="h2 mb-2">{producto.titulo}</Card.Title>
                 <h3 className="text-primary display-6 fw-bold mb-4">{producto.precio} $</h3>
 
                 <h5 className="text-muted small uppercase fw-bold">Descripción</h5>
-                <Card.Text className="text-secondary flex-grow-1">
+                <Card.Text className="text-secondary mb-4">
                   {producto.descripcion || "Este producto no tiene descripción."}
                 </Card.Text>
 
-                <div className="border-top pt-3 mt-3 bg-white small text-muted">
-                  <div className="d-flex justify-content-between mb-2">
-                    <span>Ubicación de recogida:</span>
-                    <strong className="text-dark">{producto.recogida?.descripcion || "No especificada"}</strong>
-                  </div>
-                  <div className="d-flex justify-content-between mb-2">
-                    <span>Vendedor:</span>
-                    <strong className="text-dark">{producto.vendedorId}</strong>
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <span>Visualizaciones:</span>
-                    <span>{producto.visualizaciones} visitas</span>
-                  </div>
+                <div className="border-top pt-3 bg-white small text-muted">
+                  <Row className="mb-2">
+                    <Col xs={12} sm={6}>Ubicación de recogida:</Col>
+                    <Col xs={12} sm={6} className="text-end fw-bold text-dark">
+                      {producto.recogida?.descripcion || "No especificada"}
+                    </Col>
+                  </Row>
+
+                  <Row className="mb-2">
+                    <Col xs={12} sm={6}>Vendedor:</Col>
+                    <Col xs={12} sm={6} className="text-end fw-bold text-dark">
+                      {producto.vendedorId}
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col xs={12} sm={6}>Visualizaciones:</Col>
+                    <Col xs={12} sm={6} className="text-end">
+                      {producto.visualizaciones} visitas
+                    </Col>
+                  </Row>
                 </div>
 
                 <Button variant="success" className="w-100 mt-4 size-lg">
                   Comprar
                 </Button>
               </Card.Body>
-            </div>
-          </div>
+            </Col>
+          </Row>
         </Card>
+
       </Container>
+
     </div>
   );
 }
