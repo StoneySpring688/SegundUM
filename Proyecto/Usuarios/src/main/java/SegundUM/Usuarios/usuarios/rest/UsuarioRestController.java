@@ -87,6 +87,27 @@ public class UsuarioRestController {
         return Response.ok(listado).build();
     }
 
+    /**
+     * Para obtener datos de un usuario concreto
+     **/
+    @GET
+    @Path("/{id}")
+    @RolesAllowed("USUARIO")
+    public Response getUsuarioVendedor(@PathParam("id") String id) throws Exception {
+        logger.info("Petición recibida: GET /usuarios/{}", id);
+
+        Usuario usuario = servicioUsuarios.getUserById(id);
+
+        UsuarioDTO dto = UsuarioDTO.fromEntity(usuario);
+        String url = urlUsuario(usuario.getId()).toString();
+        dto.addLink("self", url);
+        dto.addLink("all", UriBuilder.fromUri(uriInfo.getBaseUri()).path("usuarios").build().toString());
+        dto.addLink("modificar", url);
+        dto.addLink("eliminar", url);
+
+        logger.info("Usuario {} recuperado.", id);
+        return Response.ok(dto).build();
+    }
     
     /**
      * Recuperar el usuario logeado

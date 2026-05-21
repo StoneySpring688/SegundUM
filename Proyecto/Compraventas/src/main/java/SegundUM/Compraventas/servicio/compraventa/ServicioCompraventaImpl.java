@@ -61,14 +61,15 @@ public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntra
         logger.info("Producto Obtenido = {}", producto.toString());
 
         if (producto.isVendido()) {
+        	logger.warn("El producto {} ya ha sido vendido", producto.toString());
             throw new IllegalStateException("El producto ya ha sido vendido");
         }
 
-        UsuarioDTO comprador = puertoUsuarios.obtenerDatosUsuario(idComprador, token);
+        UsuarioDTO comprador = puertoUsuarios.obtenerDatosVendedor(idComprador, token);
 
         logger.info("Comprador Obtenido = {}", comprador.toString());
 
-        UsuarioDTO vendedor = puertoUsuarios.obtenerDatosUsuario(producto.getIdVendedor(), token);
+        UsuarioDTO vendedor = puertoUsuarios.obtenerDatosVendedor(producto.getIdVendedor(), token);
 
         // Extraer descripción del lugar de recogida; puede ser null si el producto no la define
         String descripcionRecogida = producto.getRecogida() != null ? producto.getRecogida().getDescripcion() : null;

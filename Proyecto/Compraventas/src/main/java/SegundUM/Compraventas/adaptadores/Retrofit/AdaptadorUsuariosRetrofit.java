@@ -22,10 +22,22 @@ public class AdaptadorUsuariosRetrofit implements PuertoUsuarios {
 		this.api = api;
 	}
 	
-	public UsuarioDTO obtenerDatosUsuario(String idUsuario, String token) {
+	public UsuarioDTO obtenerDatosUsuario(String token) {
+		logger.info("Consultando datos del usuario via Retrofit");
+		try {
+			UsuarioDTO usuario = api.getUsuario(token).execute().body();
+			logger.debug("Usuario {} obtenido correctamente", usuario);
+			return usuario;
+		} catch (Exception e) {
+			logger.error("Error al obtener usuario via Retrofit: {}", e.getMessage());
+			throw new RuntimeException("Error en Retrofit", e);
+		}
+	}
+	
+	public UsuarioDTO obtenerDatosVendedor(String idUsuario, String token) {
 		logger.info("Consultando datos del usuario {} via Retrofit", idUsuario);
 		try {
-			UsuarioDTO usuario = api.getUsuario(idUsuario, token).execute().body();
+			UsuarioDTO usuario = api.getVendedor(idUsuario, token).execute().body();
 			logger.debug("Usuario {} obtenido correctamente", idUsuario);
 			return usuario;
 		} catch (Exception e) {

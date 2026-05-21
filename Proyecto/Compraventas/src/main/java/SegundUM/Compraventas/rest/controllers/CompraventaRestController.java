@@ -100,12 +100,14 @@ public class CompraventaRestController implements CompraventaApi {
     }
 
     @GetMapping("/vendedor/{idVendedor}")
-    @PreAuthorize("hasAuthority('USUARIO') and #idVendedor == authentication.principal")
+    @PreAuthorize("hasAuthority('USUARIO')")
     public PagedModel<EntityModel<CompraventaDTO>> recuperarVentasDeUsuario(
-            @PathVariable String idVendedor,
             @ParameterObject Pageable paginacion) throws Exception {
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String idUsuario = (String) auth.getPrincipal();
 
-        Page<Compraventa> pagina = servicioCompraventa.recuperarVentasDeUsuario(idVendedor, paginacion);
+        Page<Compraventa> pagina = servicioCompraventa.recuperarVentasDeUsuario(idUsuario, paginacion);
         Page<CompraventaDTO> paginaDTO = pagina.map(CompraventaDTO::fromEntity);
 
         return pagedResourcesAssembler.toModel(paginaDTO);

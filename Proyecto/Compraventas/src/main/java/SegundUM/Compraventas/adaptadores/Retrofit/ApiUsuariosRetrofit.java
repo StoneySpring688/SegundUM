@@ -8,8 +8,12 @@ import retrofit2.http.Path;
 
 public interface ApiUsuariosRetrofit {
 	
-	@GET("{id}")
+	@GET("logged")
 	Call<UsuarioDTO> getUsuario(
-			@Path("id") String id,
+			@Header("Authorization") String token);
+	
+	@GET("{id}")
+	Call<UsuarioDTO> getVendedor(
+			@Path("id") String idUsuario,
 			@Header("Authorization") String token);
 }

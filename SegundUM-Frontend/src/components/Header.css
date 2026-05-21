@@ -17,3 +17,7 @@
 .profile-img:hover {
     transform: scale(1.05);
 }
+
+.profile-img:active {
+    transform: scale(1.55);
+}

@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Producto from './pages/Producto';
 import Buscar from './pages/Buscar';
 import PerfilUsuario from './pages/PerfilUsuario';
+import Compras from './pages/Compras';
+import Ventas from './pages/Ventas';
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
         <Route path="/producto/:id" element={<Producto />} />
         <Route path='/buscar/' element={<Buscar/>}/>
         <Route path='/user/' element={<PerfilUsuario/>}/>
+        <Route path='/compras/' element={<Compras/>}/>
+        <Route path='/ventas/' element={<Ventas/>}/>
       </Routes>
     </BrowserRouter>
   )

@@ -19,7 +19,7 @@ function Header() {
     }
  
     return (
-        <Navbar expand="lg" className="Header mb-3">
+        <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="Header mb-3">
             <Container fluid>
                 <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" onClick={handleToggle} />
                 <Navbar.Brand as={Link} to="/home/">
@@ -31,6 +31,7 @@ function Header() {
                     id="offcanvasNavbar-expand-lg"
                     aria-labelledby="offcanvasNavbarLabel-expand-lg"
                     placement="start"
+                    data-bs-theme="dark"
                 >
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
@@ -42,6 +43,10 @@ function Header() {
                             <Nav.Link as={Link} to="/user" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
                             <Nav.Link as={Link} to="/home/" onClick={handleClose}>Home</Nav.Link>
                             <Nav.Link as={Link} to="/buscar/" onClick={handleClose}>Buscar Productos</Nav.Link>
+                            <NavDropdown title="Compraventas" id='compraventas-dopdown'>
+                                <NavDropdown.Item as={Link} to="/compras" onClick={handleClose}>Mis Compras</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/ventas" onClick={handleClose}>Mis Ventas</NavDropdown.Item>
+                            </NavDropdown>
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             {/*TODO poner el resto de links aquí*/}
                         </Nav>

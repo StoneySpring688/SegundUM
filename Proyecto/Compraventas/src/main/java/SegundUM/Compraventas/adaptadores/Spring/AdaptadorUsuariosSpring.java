@@ -31,7 +31,7 @@ private final RestTemplate restTemplate;
 	}
 	
 	@Override
-	public UsuarioDTO obtenerDatosUsuario(String idUsuario, String token) {
+	public UsuarioDTO obtenerDatosVendedor(String idUsuario, String token) {
 		HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         
@@ -39,6 +39,23 @@ private final RestTemplate restTemplate;
         
         ResponseEntity<UsuarioDTO> response = restTemplate.exchange(
                 urlBase + idUsuario,
+                HttpMethod.GET,
+                requestEntity,
+                UsuarioDTO.class
+        );
+        
+		return response.getBody();
+	}
+	
+	@Override
+	public UsuarioDTO obtenerDatosUsuario(String token) {
+		HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        
+        ResponseEntity<UsuarioDTO> response = restTemplate.exchange(
+                urlBase,
                 HttpMethod.GET,
                 requestEntity,
                 UsuarioDTO.class
