@@ -61,9 +61,10 @@ function FormularioFiltros({ onResultadoBusqueda }) {
     e.preventDefault();
     console.log("filtros de busqueda: ", filtros);
     try {
-        const productosEncontrados = await apiProductos.buscarProductos(filtros);
+        const {paginas, productos: productosEncontrados} = await apiProductos.buscarProductos(filtros);
         console.log("Productos encontrados: ", productosEncontrados);
-        onResultadoBusqueda(productosEncontrados);
+        console.log("paginas encontradas para la busqueda: ", paginas);
+        onResultadoBusqueda(productosEncontrados, paginas);
     } catch (error) {
         console.error("Error al buscar productos:", error);
     }

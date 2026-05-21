@@ -96,7 +96,9 @@ export const apiProductos = {
       const data = response.data;
 
       if (data && data._embedded && data._embedded.productoDTOList) {
-        return data._embedded.productoDTOList;
+        const paginas = data.page;
+        const productos = data._embedded.productoDTOList;
+        return {paginas, productos};
       }
 
       return [];

@@ -5,9 +5,11 @@ import ListaProductos from "../components/ListaProductos";
 
 function Buscar(){
     const [productos, setProductos] = useState([]);
+    const [paginas, setPaginas] = useState({});
 
-    const actualizarProductos = (nuevosProductos) => {
+    const actualizarProductos = (nuevosProductos, paginas) => {
         setProductos(nuevosProductos);
+        setPaginas(paginas);
     }
 
     return(

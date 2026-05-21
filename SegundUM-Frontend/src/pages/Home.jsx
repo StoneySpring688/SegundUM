@@ -19,7 +19,7 @@ function Home() {
                 }
                 console.log("categorias de memoria: ", categorias);
                 
-                const productosReales = await apiProductos.buscarProductos({
+                const {productos: productosReales} = await apiProductos.buscarProductos({
                     page: 0,
                     size: 12
                 });
