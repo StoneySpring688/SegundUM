@@ -43,11 +43,14 @@ function Header() {
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                             <Nav.Link as={Link} to="/user" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
                             <Nav.Link as={Link} to="/home/" onClick={handleClose}>Home</Nav.Link>
-                            <Nav.Link as={Link} to="/buscar/" onClick={handleClose}>Buscar Productos</Nav.Link>
+                            <Nav.Link as={Link} to="/buscar/" onClick={handleClose}>Buscar</Nav.Link>
                             <NavDropdown title="Compraventas" id='compraventas-dopdown'>
                                 <NavDropdown.Item as={Link} to="/compras" onClick={handleClose}>Mis Compras</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/ventas" onClick={handleClose}>Mis Ventas</NavDropdown.Item>
                                 <NavDropdown.Item as={Link} to="/compraventasEntre" onClick={handleClose}>Compraventas entre</NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Productos" id='productos-dopdown'>
+                                <NavDropdown.Item as={Link} to="/publicar" onClick={handleClose}>Publicar Producto</NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                             {/*TODO poner el resto de links aquí*/}

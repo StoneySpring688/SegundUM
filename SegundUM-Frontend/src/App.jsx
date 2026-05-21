@@ -9,6 +9,7 @@ import PerfilUsuario from './pages/PerfilUsuario';
 import Compras from './pages/Compras';
 import Ventas from './pages/Ventas';
 import CompraventasEntre from './pages/CompraventasEntre';
+import PublicarProducto from './pages/PublicarProducto';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path='/compras/' element={<Compras/>}/>
         <Route path='/ventas/' element={<Ventas/>}/>
         <Route path='/compraventasEntre/' element={<CompraventasEntre/>}/>
+        <Route path='/publicar/' element={<PublicarProducto/>}/>
       </Routes>
     </BrowserRouter>
   )

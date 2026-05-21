@@ -137,12 +137,22 @@ export const apiProductos = {
       throw error;
     }
   },
+
   registrarVisualizacion: async (id) => {
     try {
       const response = await api.put(`/productos/${id}/visualizaciones`);
       console.log("Visualización registrada para el producto con id: ", id);
     } catch (error) {
       console.log(`Error al registrar la visualizacion en el producto con id: ${id}`, error);
+    }
+  },
+  
+  publicarProducto: async (producto) => {
+    try {
+      const response = await api.post(`/productos`, producto);
+      console.log("respuesta de publicar el producto: ", response);
+    } catch (error) {
+      console.log(`Error al publicar el producto: `, error);
     }
   }
 };
