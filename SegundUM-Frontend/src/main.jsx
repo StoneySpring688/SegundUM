@@ -1,3 +1,4 @@
+// Punto de entrada: monta la app en el elemento #root del HTML
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'

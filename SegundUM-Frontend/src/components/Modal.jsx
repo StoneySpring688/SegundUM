@@ -1,3 +1,4 @@
+// Componente: modal de confirmación reutilizable con dos botones
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';

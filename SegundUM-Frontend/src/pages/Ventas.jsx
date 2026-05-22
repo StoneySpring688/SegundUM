@@ -1,3 +1,4 @@
+// Página: historial de ventas del usuario autenticado
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import ListaCompraventas from "../components/ListaCompraventas";

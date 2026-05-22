@@ -1,3 +1,4 @@
+// Componente: tarjeta con los datos de una compraventa (título, precio, partes y fecha)
 import { Card, Row, Col } from "react-bootstrap";
 
 function TarjetaCompraventa({ compraventa }) {
@@ -14,7 +15,6 @@ function TarjetaCompraventa({ compraventa }) {
   return (
     <Card border="dark" className="shadow-sm border-1 mb-3">
       <Card.Body className="p-4">
-        {/* Fila principal: Título y Precio */}
         <Row className="align-items-center mb-3">
           <Col sm={12} md={8}>
             <Card.Title className="mb-0 text-truncate fs-4 text-md-start text-center">
@@ -30,7 +30,6 @@ function TarjetaCompraventa({ compraventa }) {
 
         <hr className="text-muted opacity-25" />
 
-        {/* Fila secundaria: Detalles (Vendedor, Comprador, Fecha) */}
         <Row className="text-muted small g-2 align-items-center">
           <Col xs={12} className="text-center">
             <span className="fw-bold me-1">Vendedor:</span> 

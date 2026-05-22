@@ -1,3 +1,4 @@
+// Servicio de compraventas: crear compra y consultar historial de compras/ventas
 import api from "./axiosConfig";
 
 export const apiCompraventas = {

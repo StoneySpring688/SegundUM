@@ -1,3 +1,4 @@
+// Página: formulario para publicar un nuevo producto
 import { useState, useEffect } from "react";
 import { Container, Card, Form, Button, Row, Col, ListGroup, Alert } from "react-bootstrap";
 import Header from "../components/Header";
@@ -128,7 +129,6 @@ function PublicarProducto() {
                         <Form noValidate validated={validado} onSubmit={handleSubmit}>
                             <h5 className="text-primary mb-3">Datos Básicos</h5>
                             <Row className="g-3 mb-4">
-                                {/* --- TITULO --- */}
                                 <Col xs={12} md={8}>
                                     <Form.Group controlId="titulo">
                                         <Form.Label className="small fw-bold text-muted">Titulo del Producto</Form.Label>
@@ -145,7 +145,6 @@ function PublicarProducto() {
                                 </Col>
 
                                 <Col xs={12} md={4}>
-                                    {/* --- PRECIO --- */}
                                     <Form.Group controlId="precio">
                                         <Form.Label className="small fw-bold text-muted">Precio (€)</Form.Label>
                                         <Form.Control
@@ -164,7 +163,6 @@ function PublicarProducto() {
 
                                 
                                 <Col xs={12} md={6} className="position-relative">
-                                    {/* --- CATEGORIAS--- */}
                                     <Form.Group controlId="categoriaId">
                                         <Form.Label className="small fw-bold text-muted">Categoria</Form.Label>
                                         <Form.Control
@@ -220,7 +218,6 @@ function PublicarProducto() {
                                 </Col>
 
                                 <Col xs={12}>
-                                    {/* --- DESCRIPCION --- */}
                                     <Form.Group controlId="descripcion">
                                         <Form.Label className="small fw-bold text-muted">Descripcion</Form.Label>
                                         <Form.Control

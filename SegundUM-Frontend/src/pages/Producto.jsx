@@ -1,3 +1,4 @@
+// Página: detalle de producto con opción de compra
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Container, Col, Row, Card, Button, Badge, Spinner, Alert } from "react-bootstrap";

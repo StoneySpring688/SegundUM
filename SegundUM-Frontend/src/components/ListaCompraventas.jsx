@@ -1,3 +1,4 @@
+// Componente: rejilla de tarjetas de compraventa
 import { Container, Row, Col} from "react-bootstrap";
 import TarjetaCompraventa from "./TarjetaCompraventa";
 

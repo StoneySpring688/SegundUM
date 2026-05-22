@@ -1,3 +1,4 @@
+// Componente: rejilla de tarjetas de usuario
 import { Container, Row, Col} from "react-bootstrap";
 import TarjetaUsuario from "./TarjetaUsuario";
 

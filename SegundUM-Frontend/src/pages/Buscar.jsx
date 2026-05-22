@@ -1,3 +1,4 @@
+// Página: búsqueda de productos con filtros y paginación
 import { useState } from "react";
 import Header from "../components/Header"
 import FormularioFiltros from "../components/FormularioFiltros"

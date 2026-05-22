@@ -1,3 +1,4 @@
+// Componente: tarjeta con los datos de un usuario y sus estadísticas de actividad
 import { Card, Badge, Col, Row } from "react-bootstrap";
 
 function TarjetaUsuario({ usuario }) {
@@ -5,10 +6,8 @@ function TarjetaUsuario({ usuario }) {
 
     return (
         <Card border="secondary" className="shadow-sm border-2 bg-white h-100">
-            {/* Aplicamos la alineación responsiva directamente al cuerpo de la tarjeta */}
             <Card.Body className="d-flex flex-column text-center text-md-start">
                 
-                {/* Unificamos todos los datos en una sola fila con un gap más cerrado (g-2) */}
                 <Row className="g-2 mb-3">
                     <Col xs={12}>
                         <Card.Subtitle className="text-muted small mb-0">ID</Card.Subtitle>
@@ -26,7 +25,6 @@ function TarjetaUsuario({ usuario }) {
 
                     <Col xs={12} md={6}>
                         <Card.Subtitle className="text-muted small mb-0">Nombre</Card.Subtitle>
-                        {/* Reducimos el margin-bottom de mb-2 a mb-1 para apretar más el diseño */}
                         <Card.Text className="mb-1">{usuario.nombre || "No consta"}</Card.Text>
                     </Col>
 
@@ -48,7 +46,6 @@ function TarjetaUsuario({ usuario }) {
 
                 <hr className="my-2 text-muted" />
 
-                {/* Esta fila siempre estará centrada por el 'text-center' que le has puesto */}
                 <Row className="text-center g-2 mb-auto mt-2">
                     <Col xs={6}>
                         <Card.Subtitle className="text-muted small mb-0">Compras</Card.Subtitle>

@@ -1,3 +1,4 @@
+// Página: listado de todos los usuarios registrados (solo administradores)
 import { useState, useEffect } from "react";
 import { Container, Spinner } from "react-bootstrap";
 import Header from "../components/Header";

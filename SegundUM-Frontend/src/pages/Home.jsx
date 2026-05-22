@@ -1,3 +1,4 @@
+// Página: portada con los primeros 12 productos y precarga de categorías en memoria
 import { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
 import Header from "../components/Header";

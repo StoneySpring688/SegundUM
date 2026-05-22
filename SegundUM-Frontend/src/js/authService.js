@@ -1,3 +1,4 @@
+// Servicio de autenticación: login, registro y logout contra /auth
 import api from "./axiosConfig";
 import { dataService } from "./dataService";
 

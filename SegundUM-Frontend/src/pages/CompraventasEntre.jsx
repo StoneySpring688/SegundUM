@@ -1,3 +1,4 @@
+// Página: consulta de compraventas entre dos usuarios (solo administradores)
 import { useState, useEffect } from "react";
 import { Form, Button, Card, Row, Col, Alert, Container, Spinner } from "react-bootstrap";
 import Header from "../components/Header";

@@ -1,3 +1,4 @@
+// Instancia de axios compartida: apunta a la pasarela y envía cookies automáticamente
 import axios from "axios";
 const api = axios.create({
   baseURL: "http://localhost:8090",

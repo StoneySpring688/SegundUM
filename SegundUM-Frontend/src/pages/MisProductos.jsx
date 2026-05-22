@@ -1,3 +1,4 @@
+// Página: productos publicados por el usuario autenticado
 import { useState, useEffect } from "react";
 import Header from "../components/Header"
 import ListaProductos from "../components/ListaProductos";

@@ -1,3 +1,4 @@
+// Página: formulario de inicio de sesión
 import React, { useState } from "react";
 import { authService } from "../js/authService";
 import { dataService } from "../js/dataService";

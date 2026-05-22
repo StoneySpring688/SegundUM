@@ -1,3 +1,4 @@
+// Componente: formulario de filtros de búsqueda con autocompletado de categorías
 import { useState, useEffect } from "react";
 import { Form, Button, Row, Col, Card, ListGroup } from "react-bootstrap";
 import { dataService } from "../js/dataService";
@@ -76,7 +77,6 @@ function FormularioFiltros({ onResultadoBusqueda }) {
       <Form onSubmit={handleSubmit}>
         <Row className="g-3">
           
-          {/* Campo: Texto */}
           <Col xs={12} md={6} lg={3}>
             <Form.Group controlId="filtroTexto">
               <Form.Label className="small fw-bold text-muted">¿Qué buscas?</Form.Label>
@@ -90,7 +90,6 @@ function FormularioFiltros({ onResultadoBusqueda }) {
             </Form.Group>
           </Col>
 
-          {/* Campo: Categoría (Desplegable) */}
           <Col xs={12} md={6} lg={3} className="position-relative">
             <Form.Group controlId="filtroCategoriaBusqueda">
               <Form.Label className="small fw-bold text-muted">Categoría</Form.Label>
@@ -126,7 +125,6 @@ function FormularioFiltros({ onResultadoBusqueda }) {
             )}
           </Col>
 
-          {/* Campo: Estado Mínimo (Desplegable) */}
           <Col xs={12} md={6} lg={3}>
             <Form.Group controlId="filtroEstado">
               <Form.Label className="small fw-bold text-muted">Estado mínimo</Form.Label>
@@ -145,7 +143,6 @@ function FormularioFiltros({ onResultadoBusqueda }) {
             </Form.Group>
           </Col>
 
-          {/* Campo: Precio Máximo */}
           <Col xs={12} md={6} lg={3}>
             <Form.Group controlId="filtroPrecio">
               <Form.Label className="small fw-bold text-muted">Precio máx (€)</Form.Label>
@@ -162,7 +159,6 @@ function FormularioFiltros({ onResultadoBusqueda }) {
 
         </Row>
 
-        {/* Botón de envío */}
         <Row className="mt-4">
           <Col className="text-end">
             <Button variant="primary" type="submit" className="px-4 py-2 fw-bold">

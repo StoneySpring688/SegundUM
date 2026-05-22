@@ -1,3 +1,4 @@
+// Componente: tarjeta con resumen de producto y botón para ver el detalle
 import { Card, Button, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { dataService } from "../js/dataService";
@@ -17,7 +18,6 @@ function TarjetaProducto({ producto }) {
     return (
 
         <Card className="h-100 shadow-sm border-0">
-            {/*Esto es la locura máxima para sacar imagenes de prueba*/}
             <Card.Img
                 variant="top"
                 src={`https://picsum.photos/seed/${producto.id}/400/300`}

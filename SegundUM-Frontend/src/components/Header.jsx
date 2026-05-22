@@ -1,3 +1,4 @@
+// Componente: barra de navegación con menú lateral y acceso al perfil
 import { useState, useEffect } from 'react';
 import { Container, Nav, Navbar, NavDropdown, Offcanvas, Image } from 'react-bootstrap';
 import { useNavigate, Link, NavLink } from 'react-router';

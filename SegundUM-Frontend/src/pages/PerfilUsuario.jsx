@@ -1,3 +1,4 @@
+// Página: perfil del usuario con opción de editar sus datos
 import { useState, useEffect } from "react";
 import { Card, Form, Button, Row, Col, Badge } from "react-bootstrap";
 import Header from "../components/Header";
@@ -96,7 +97,6 @@ function PerfilUsuario() {
             <Card border="secondary" className="shadow-sm border-2 bg-white p-4 mx-auto" style={{ maxWidth: "800px" }}>
 
                 <Card.Body>
-                    {/* Cabecera del Perfil */}
                     <Row className="align-items-center border-bottom pb-3 mb-4">
                         <Col xs={12} sm={6}>
                             <Card.Title className="h3 mb-1">Perfil de Usuario</Card.Title>
@@ -108,7 +108,6 @@ function PerfilUsuario() {
                         </Col>
                     </Row>
 
-                    {/* Formulario de Datos */}
                     <Form noValidate validated={validado} onSubmit={handleFormSubmit}>
                         
                         <Row className="g-3 mb-4">
@@ -188,7 +187,6 @@ function PerfilUsuario() {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        {/* Formulario para cambiar la contraseña*/}
                         {editando && (<Row>
                             <Col xs={12} className="text-center">
                                 <Form.Group controlId="perfilClave">
@@ -206,7 +204,6 @@ function PerfilUsuario() {
                             </Col>
                         </Row>)}
 
-                        {/* Sección Informativa / Estadísticas (Siempre Deshabilitada) */}
                         <Row className="g-3 bg-light p-3 rounded mb-4">
                             <Col xs={6} className="text-center border-end">
                                 <div className="small text-muted fw-bold">Compras Realizadas</div>
@@ -218,7 +215,6 @@ function PerfilUsuario() {
                             </Col>
                         </Row>
 
-                        {/* Botones de Acción */}
                         <Row>
                             <Col className="text-end">
                                 {editando ? (

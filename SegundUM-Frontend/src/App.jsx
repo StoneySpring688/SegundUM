@@ -1,3 +1,4 @@
+// Enrutador principal: define todas las rutas de la aplicación
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from "react-router";
 import Login from './pages/Login';
