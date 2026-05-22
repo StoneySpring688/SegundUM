@@ -30,7 +30,21 @@ export const apiUsuarios = {
       };
       api.put("/usuarios", usuarioDTO);
     } catch (error) {
-      console.log(`Error al modificar el usuario: `, error);
+      console.error(`Error al modificar el usuario: `, error);
+      throw error;
+    }
+  },
+  
+  getUsuarios: async () => {
+    try {
+      const usuarios = await api.get("/usuarios");
+      const usuariosArray = usuarios.data.resumenEntidad.map(u => u.resumen);
+
+      console.log("Usuarios recuperados de la api: ", usuariosArray);
+
+      return usuariosArray;
+    } catch (error) {
+      console.error("Error al recuperar los usuarios de la api: ", error);
       throw error;
     }
   }

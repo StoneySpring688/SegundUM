@@ -11,7 +11,6 @@ function TarjetaProducto({ producto }) {
         //const producto = await apiProductos.getProductoById(id);
         //console.log("Producto: ", producto);
 
-        // TODO hay que incrementar el numero de visualizaciones en uno.
         navigate(`/producto/${id}`);
     }
 

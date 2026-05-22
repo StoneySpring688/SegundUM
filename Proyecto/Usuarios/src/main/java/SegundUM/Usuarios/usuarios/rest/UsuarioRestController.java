@@ -58,7 +58,7 @@ public class UsuarioRestController {
     }
 
     @GET
-    @RolesAllowed("USUARIO")
+    @RolesAllowed("ADMINISTRADOR")
     public Response getAllusuarios() throws Exception {
         logger.info("Petición recibida: GET /usuarios/");
 

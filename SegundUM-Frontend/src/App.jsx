@@ -11,6 +11,7 @@ import Ventas from './pages/Ventas';
 import CompraventasEntre from './pages/CompraventasEntre';
 import PublicarProducto from './pages/PublicarProducto';
 import MisProductos from './pages/MisProductos';
+import ListaUsuarios from './pages/ListaUsuarios';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path='/compraventasEntre/' element={<CompraventasEntre/>}/>
         <Route path='/publicar/' element={<PublicarProducto/>}/>
         <Route path='/misProductos/' element={<MisProductos/>}/>
+        <Route path='/listaUsuarios/' element={<ListaUsuarios/>}/>
       </Routes>
     </BrowserRouter>
   )

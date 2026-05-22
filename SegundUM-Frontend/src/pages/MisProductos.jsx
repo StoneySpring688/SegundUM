@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header"
-import FormularioFiltros from "../components/FormularioFiltros"
 import ListaProductos from "../components/ListaProductos";
 import Paginador from "../components/Paginador";
 import { apiProductos } from "../js/apiProductos";
