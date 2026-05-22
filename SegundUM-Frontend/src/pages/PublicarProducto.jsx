@@ -119,7 +119,7 @@ function PublicarProducto() {
                 </Alert>)}
 
             <Container className="mt-4 mb-5">
-                <Card className="shadow-sm border-0 border-md border-2 border-secondary bg-white p-4 mx-auto" style={{ maxWidth: "800px" }}>
+                <Card border="secondary" className="shadow-sm border-2 border-md border-2 border-secondary bg-white p-4 mx-auto" style={{ maxWidth: "800px" }}>
                     <Card.Body>
                         <Card.Title className="h3 border-bottom pb-3 mb-4">
                             Publicar Nuevo Producto

@@ -10,6 +10,7 @@ import Compras from './pages/Compras';
 import Ventas from './pages/Ventas';
 import CompraventasEntre from './pages/CompraventasEntre';
 import PublicarProducto from './pages/PublicarProducto';
+import MisProductos from './pages/MisProductos';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/ventas/' element={<Ventas/>}/>
         <Route path='/compraventasEntre/' element={<CompraventasEntre/>}/>
         <Route path='/publicar/' element={<PublicarProducto/>}/>
+        <Route path='/misProductos/' element={<MisProductos/>}/>
       </Routes>
     </BrowserRouter>
   )

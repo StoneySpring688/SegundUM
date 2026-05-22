@@ -51,9 +51,10 @@ function Header() {
                             </NavDropdown>
                             <NavDropdown title="Productos" id='productos-dopdown'>
                                 <NavDropdown.Item as={Link} to="/publicar" onClick={handleClose}>Publicar Producto</NavDropdown.Item>
+                                <NavDropdown.Item as={Link} to="/misProductos" onClick={handleClose}>Mis Productos</NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                            {/*TODO poner el resto de links aquí*/}
+                            {/*TODO poner el resto de links aqui*/}
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

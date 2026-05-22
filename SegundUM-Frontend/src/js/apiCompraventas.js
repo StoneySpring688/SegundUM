@@ -4,10 +4,16 @@ export const apiCompraventas = {
     hacerCompraventas: async (idProducto) => {
         try {
             const compraventaDto = { idProducto };
-            console.log(compraventaDto);
             const response = await api.post("/compraventas", compraventaDto);
             console.log("respuesta hacer compraventa: ", response);
+            
+            return { succes: true, mensaje: "Compra realizada con exito" };
         } catch (error) {
+            
+            if(error.response && error.response.status === 406) {
+                return { succes: false, mensaje: "No puedes comprar tu propio producto" };
+            }
+            
             console.error("Error al hacer una compraventa: ", error);
             throw error;
         }

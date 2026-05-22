@@ -26,6 +26,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException ex) {
         logger.warn("Argumento inválido: {}", ex.getMessage());
+        if (ex.getMessage() != null &&
+                (ex.getMessage().contains("No puedes comprar tu producto"))) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .body(new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), ex.getMessage()));
+        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
     }

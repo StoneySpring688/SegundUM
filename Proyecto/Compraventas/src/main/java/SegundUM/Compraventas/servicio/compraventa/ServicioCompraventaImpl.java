@@ -59,6 +59,11 @@ public class ServicioCompraventaImpl implements ServicioCompraventa, PuertoEntra
         ProductoDTO producto = puertoProductos.obtenerDatosProducto(idProducto);
 
         logger.info("Producto Obtenido = {}", producto.toString());
+        
+        if(producto.getIdVendedor().equals(idComprador)) {
+        	logger.warn("No puedes comprar tu producto");
+        	throw new IllegalArgumentException("No puedes comprar tu producto");
+        }
 
         if (producto.isVendido()) {
         	logger.warn("El producto {} ya ha sido vendido", producto.toString());

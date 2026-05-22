@@ -15,6 +15,8 @@ function Producto() {
   const [cargando, setCargando] = useState(true);
   const [comprado, setComprado] = useState(false);
   const [error, setError] = useState(null);
+  const [succes, setSucces] = useState(false);
+  const [mensaje, setMensaje] = useState("");
 
 
   // TODO aquí tengo un dilema, resgistrar pprimero la visualización y ver el detalle con esa visualización, o hacerlo después y no verla hasta volveer al home.
@@ -51,9 +53,21 @@ function Producto() {
   }, [id]);
 
   const hacerCompraventa = async () => {
-    apiCompraventas.hacerCompraventas(id);
-    setComprado(true);
+    try {
+      const { succes:exito, mensaje:msg } = await apiCompraventas.hacerCompraventas(id);
 
+      console.log(exito);
+      console.log(msg);
+      
+      setComprado(true);
+      setSucces(exito); 
+      setMensaje(msg);
+      
+    } catch (error) {
+      setComprado(true);
+      setSucces(false);
+      setMensaje("Error inesperado al contactar con el servidor. Intentalo de nuevo más tarde.");
+    }
   }
 
   if (cargando) {
@@ -90,8 +104,12 @@ function Producto() {
     <div className="bg-light" style={{ minHeight: '100vh' }}>
       <Header />
 
-      {comprado &&(<Alert key="success" variant="success">
-          Compra realizada con exito
+      {comprado && succes &&(<Alert key="success" variant="success">
+          {mensaje}
+        </Alert>)}
+
+        {comprado && !succes &&(<Alert key="danger" variant="danger">
+          {mensaje}
         </Alert>)}
 
       <Container className="py-5">

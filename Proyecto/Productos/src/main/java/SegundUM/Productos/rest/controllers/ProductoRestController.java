@@ -148,10 +148,10 @@ public class ProductoRestController implements ProductoApi {
     }
 
     /** GET /productos/vendedor/{vendedorId} — Obtener productos de un vendedor */
-    @GetMapping("/vendedor/{vendedorId}")
+    @GetMapping("/vendedor")
     public PagedModel<EntityModel<ProductoDTO>> getProductosPorVendedor(
-            @PathVariable String vendedorId,
-            @ParameterObject Pageable paginacion) throws Exception {
+            @ParameterObject Pageable paginacion, Authentication authentication) throws Exception {
+    	String vendedorId = authentication.getName();
         Page<Producto> productos = servicioProductos.getProductosPorVendedor(vendedorId, paginacion);
         return pagedResourcesAssembler.toModel(productos.map(ProductoDTO::fromEntity));
     }

@@ -14,17 +14,17 @@ export const apiProductos = {
     // Función auxiliar recursiva para leer tanto las categorías raíz como las subcategorías
     const extraerSubcategorias = (categorias) => {
       let listaPlana = [];
-      
+
       for (const cat of categorias) {
         // Agregamos la categoría actual a la lista
-        listaPlana.push(cat); 
-        
+        listaPlana.push(cat);
+
         // Si esta categoría tiene subcategorías anidadas, llamamos a la función recursivamente
         if (cat.subcategorias && cat.subcategorias.length > 0) {
           listaPlana = listaPlana.concat(extraerSubcategorias(cat.subcategorias));
         }
       }
-      
+
       return listaPlana;
     };
 
@@ -33,9 +33,9 @@ export const apiProductos = {
 
       while (tieneMasPaginas) {
         console.log(`Solicitando página ${paginaActual} de categorías...`);
-        
+
         const response = await api.get('/categorias', {
-          params: { page: paginaActual } 
+          params: { page: paginaActual }
         });
 
         const data = response.data;
@@ -49,7 +49,7 @@ export const apiProductos = {
 
         if (data && data.page) {
           const { number, totalPages } = data.page;
-          
+
           if (number < totalPages - 1) {
             paginaActual++;
           } else {
@@ -95,7 +95,7 @@ export const apiProductos = {
       console.log("parametros para la busqueda: ", params);
 
       const response = await api.get('/productos/buscar', { params });
-      
+
       const data = response.data;
 
       if (data && data._embedded && data._embedded.productoDTOList) {
@@ -105,9 +105,9 @@ export const apiProductos = {
         };
       }
 
-      return { 
-          productos: [], 
-          paginas: data?.page || null 
+      return {
+        productos: [],
+        paginas: data?.page || null
       };
 
     } catch (error) {
@@ -146,13 +146,35 @@ export const apiProductos = {
       console.log(`Error al registrar la visualizacion en el producto con id: ${id}`, error);
     }
   },
-  
+
   publicarProducto: async (producto) => {
     try {
       const response = await api.post(`/productos`, producto);
       console.log("respuesta de publicar el producto: ", response);
     } catch (error) {
-      console.log(`Error al publicar el producto: `, error);
+      console.log("Error al publicar el producto: ", error);
+    }
+  },
+
+  getProductosPublicados: async (page) => {
+    try {
+      const response = await api.get("/productos/vendedor", { params: { page: page } });
+      const data = response.data;
+      console.log("respuesta de consulta de compras del usuario: ", data);
+
+      if (data && data._embedded && data._embedded.productoDTOList) {
+        return {
+          productos: data._embedded.productoDTOList,
+          paginas: data.page
+        };
+      }
+
+      return {
+        productos: [],
+        paginas: data?.page || null
+      };
+    } catch (error) {
+      console.error("Error al recuperar los produuctos publicados del usuario: ", error);
     }
   }
 };

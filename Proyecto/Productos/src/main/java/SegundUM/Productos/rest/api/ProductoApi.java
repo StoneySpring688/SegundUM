@@ -40,7 +40,7 @@ public interface ProductoApi {
     PagedModel<EntityModel<ProductoDTO>> buscarProductos(String categoriaId, String texto, EstadoProducto estadoMinimo, BigDecimal precioMaximo, Pageable paginacion) throws Exception;
 
     @Operation(summary = "Productos de un vendedor", description = "Devuelve paginados todos los productos publicados por un vendedor")
-    PagedModel<EntityModel<ProductoDTO>> getProductosPorVendedor(String vendedorId, Pageable paginacion) throws Exception;
+    PagedModel<EntityModel<ProductoDTO>> getProductosPorVendedor(Pageable paginacion, Authentication authentication) throws Exception;
 
     @Operation(summary = "Historial mensual", description = "Resumen de productos publicados en un mes y anio concretos")
     PagedModel<EntityModel<ResumenProducto>> historialMes(int mes, int anio, Pageable paginacion) throws Exception;
