@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { authService } from "../js/authService";
-import { apiUsuarios } from "../js/apiUsuarios";
 import { dataService } from "../js/dataService";
 import { useNavigate } from "react-router";
+
 import { Form, Button, Alert, Container, Row, Col, Card } from 'react-bootstrap';
 
 function Login() {
     const [email, setEmail] = useState("");
     const [clave, setClave] = useState("");
+
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -19,17 +20,14 @@ function Login() {
         setLoading(true);
 
         try {
-
             const data = await authService.login(email, clave);
-            const usuario = await apiUsuarios.getById();
-            dataService.setUsuario(usuario);
-            console.log("usuario almacenado: ", dataService.getUsuario());
+            dataService.setUsuario({ id: data.id, nombre: data.nombre, roles: data.roles });
 
             navigate("/home");
 
         } catch (err) {
             setError("Credenciales incorrectas. Inténtalo de nuevo.");
-        }finally{
+        } finally {
             setLoading(false);
         }
     };

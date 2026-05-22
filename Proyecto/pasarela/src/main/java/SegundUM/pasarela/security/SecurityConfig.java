@@ -56,10 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         
-        // Permite envío de credenciales (tokens JWT, cookies, etc.)
+        // allowCredentials requiere origen explícito (no se puede usar "*" con credentials=true)
         config.setAllowCredentials(true);
-        // Permite peticiones desde cualquier IP/Dominio
-        config.setAllowedOrigins(Collections.singletonList("*"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000", "http://localhost:4173"));
         // Permite cualquier cabecera en la petición
         config.setAllowedHeaders(Collections.singletonList("*"));
         // Permite todos los métodos HTTP necesarios

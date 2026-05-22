@@ -24,7 +24,12 @@ export const dataService = {
      * Actualiza los datos del usuario.
      */
     setUsuario: (nuevosDatos) => {
-        usuario = { ...usuario, ...nuevosDatos };
+        usuario = { ...nuevosDatos };
+    },
+
+    clearUsuario: () => {
+        usuario = {};
+        productos = [];
     },
 
     /**

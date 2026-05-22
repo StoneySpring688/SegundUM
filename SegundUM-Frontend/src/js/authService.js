@@ -1,5 +1,5 @@
 import api from "./axiosConfig";
-import { apiUsuarios } from "./apiUsuarios";
+import { dataService } from "./dataService";
 
 export const authService = {
   /**
@@ -44,6 +44,7 @@ export const authService = {
 
   logout: async () => {
     const response = await api.post("/auth/logout");
+    dataService.clearUsuario();
     return response.data;
   }
 };
