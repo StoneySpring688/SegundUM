@@ -22,7 +22,7 @@ export const authService = {
     const idUsuario = response.data?.id;
     console.log(idUsuario);
     
-    return response.data; 
+    return response.data;
   },
 
   /**

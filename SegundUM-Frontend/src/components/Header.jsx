@@ -1,10 +1,9 @@
 // Componente: barra de navegación con menú lateral y acceso al perfil
 import { useState, useEffect } from 'react';
-import { Container, Nav, Navbar, NavDropdown, Offcanvas, Image } from 'react-bootstrap';
+import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { useNavigate, Link, NavLink } from 'react-router';
 import profilePic from '../assets/profilePlaceHolder.png'
 import { authService } from '../js/authService';
-import { dataService } from '../js/dataService';
 import { apiUsuarios } from '../js/apiUsuarios';
 import './Header.css'
 
@@ -58,7 +57,7 @@ function Header() {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                            <Nav.Link as={Link} to="/user" onClick={handleClose} className='d-sm-none d-auto'>Mi Perfil</Nav.Link>
+                            <Nav.Link as={Link} to="/user" onClick={handleClose} className='d-sm-none'>Mi Perfil</Nav.Link>
                             <Nav.Link as={Link} to="/home/" onClick={handleClose}>Home</Nav.Link>
                             <Nav.Link as={Link} to="/buscar/" onClick={handleClose}>Buscar</Nav.Link>
                             <NavDropdown title="Compraventas" id='compraventas-dopdown'>
@@ -78,7 +77,7 @@ function Header() {
                             )}
                             
                             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-                            {/*TODO poner el resto de links aqui*/}
+                           
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>

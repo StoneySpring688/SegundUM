@@ -1,16 +1,12 @@
 // Componente: tarjeta con resumen de producto y botón para ver el detalle
 import { Card, Button, Badge } from "react-bootstrap";
 import { useNavigate } from "react-router";
-import { dataService } from "../js/dataService";
 
 function TarjetaProducto({ producto }) {
 
     const navigate = useNavigate();
 
     async function handleDetails(id) {
-        //console.log("Se ha hecho click en el producto con ID:", dataService.getProductoById(id));
-        //const producto = await apiProductos.getProductoById(id);
-        //console.log("Producto: ", producto);
 
         navigate(`/producto/${id}`);
     }

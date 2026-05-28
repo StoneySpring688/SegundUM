@@ -1,5 +1,5 @@
 // Página: formulario de inicio de sesión
-import React, { useState } from "react";
+import { useState } from "react";
 import { authService } from "../js/authService";
 import { dataService } from "../js/dataService";
 import { useNavigate } from "react-router";
@@ -28,6 +28,7 @@ function Login() {
 
         } catch (err) {
             setError("Credenciales incorrectas. Inténtalo de nuevo.");
+            console.error("Error durante el login:", err);
         } finally {
             setLoading(false);
         }

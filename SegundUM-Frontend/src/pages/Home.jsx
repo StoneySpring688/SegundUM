@@ -1,10 +1,9 @@
 // Página: portada con los primeros 12 productos y precarga de categorías en memoria
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
 import Header from "../components/Header";
 import ListaProductos from "../components/ListaProductos";
 import { apiProductos } from "../js/apiProductos";
-import { apiUsuarios } from "../js/apiUsuarios";
+
 import {dataService} from "../js/dataService";
 
 function Home() {
@@ -44,7 +43,9 @@ function Home() {
     return (
         <div className="bg-light" style={{ minHeight: '100vh' }}>
             <Header />
-            <ListaProductos lista = {productos} titulo={"Productos Destacados"}/>
+            <ListaProductos 
+            lista = {productos} 
+            titulo={"Productos Destacados"}/>
         </div>
     );
 }

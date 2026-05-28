@@ -25,15 +25,7 @@ function Register() {
         setError(null);
         setLoading(true);
         
-        const userData = {
-            email,
-            nombre,
-            apellidos,
-            clave,
-            fechaNacimiento,
-            telefono
-        };
-        
+
         try {
             await authService.register(email,
                                     nombre,

@@ -20,7 +20,6 @@ function Producto() {
   const [mensaje, setMensaje] = useState("");
 
 
-  // TODO aquí tengo un dilema, resgistrar pprimero la visualización y ver el detalle con esa visualización, o hacerlo después y no verla hasta volveer al home.
   useEffect(() => {
     const cargarDetalle = async () => {
       try {
@@ -68,6 +67,7 @@ function Producto() {
       setComprado(true);
       setSucces(false);
       setMensaje("Error inesperado al contactar con el servidor. Intentalo de nuevo más tarde.");
+      console.error("Error al realizar la compraventa:", error);
     }
   }
 
