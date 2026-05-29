@@ -10,9 +10,11 @@ function Paginador({ paginacion, onCambioPagina }) {
   const { number: currentPage, totalPages } = paginacion;
   const lastPage = totalPages - 1;
 
+  // Para que no aparezca una pagina que no existe
   let startPage = Math.max(0, currentPage - 1);
   let endPage = Math.min(lastPage, currentPage + 1);
 
+  // Para tener siempre 3 paginas visibles
   if (currentPage === 0) {
     endPage = Math.min(lastPage, 2);
   } else if (currentPage === lastPage) {

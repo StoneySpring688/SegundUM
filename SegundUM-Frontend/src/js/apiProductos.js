@@ -52,8 +52,8 @@ export const apiProductos = {
       if (estadoMinimo !== undefined && estadoMinimo !== null && estadoMinimo !== '') params.estadoMinimo = estadoMinimo;
       if (precioMaximo !== undefined && precioMaximo !== null && precioMaximo !== '') params.precioMaximo = precioMaximo;
       if (page !== undefined && page !== null && page !== '') params.page = page;
-      if (size !== undefined && size !== null && size !== '') params.size = size;
-
+     if (size !== undefined && size !== null && size !== '') params.size = size;
+     
       const response = await api.get('/productos/buscar', { params });
       const data = response.data;
 

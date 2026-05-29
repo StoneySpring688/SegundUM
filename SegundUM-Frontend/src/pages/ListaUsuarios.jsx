@@ -1,15 +1,17 @@
 // Página: listado de todos los usuarios registrados (solo administradores)
 import { useState, useEffect } from "react";
-import { Container, Spinner } from "react-bootstrap";
+import { Container, Spinner, Alert, Button } from "react-bootstrap";
 import Header from "../components/Header";
 import ListadoUsuarios from "../components/ListadoUsuarios";
 import { apiUsuarios } from "../js/apiUsuarios";
+import { useNavigate } from "react-router";
 
 function ListaUsuarios(){
     const [usuarios, setUsuarios] = useState([]);
     const [isAdmin, toggleAdmin] = useState(false);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() =>{
         const init = async () => {
@@ -43,6 +45,22 @@ function ListaUsuarios(){
         );
     }
 
+      if (!isAdmin) {
+        return (
+            <>
+                <Header />
+                <Container className="mt-4" style={{ maxWidth: "600px" }}>
+                    <Alert variant="danger" className="shadow-sm">
+                        <Alert.Heading><i className="bi bi-exclamation-triangle-fill me-2"></i>Acceso Restringido</Alert.Heading>
+                        <p className="mb-0">
+                            No tienes los permisos necesarios. Solo los administradores pueden usar esta funcionalidad.
+                        </p>
+                    </Alert>
+                </Container>
+            </>
+        );
+    }
+
     if (error) {
     return (
       <div className="bg-light" style={{ minHeight: '100vh' }}>
@@ -61,21 +79,6 @@ function ListaUsuarios(){
     );
   }
 
-  if (!isAdmin) {
-        return (
-            <>
-                <Header />
-                <Container className="mt-4" style={{ maxWidth: "600px" }}>
-                    <Alert variant="danger" className="shadow-sm">
-                        <Alert.Heading><i className="bi bi-exclamation-triangle-fill me-2"></i>Acceso Restringido</Alert.Heading>
-                        <p className="mb-0">
-                            No tienes los permisos necesarios. Solo los administradores pueden usar esta funcionalidad.
-                        </p>
-                    </Alert>
-                </Container>
-            </>
-        );
-    }
 
     return(
     <>
