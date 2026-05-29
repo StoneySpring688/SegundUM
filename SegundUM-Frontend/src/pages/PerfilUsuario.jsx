@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, Form, Button, Row, Col, Badge } from "react-bootstrap";
 import Header from "../components/Header";
 import { apiUsuarios } from "../js/apiUsuarios";
+import { useNavigate } from "react-router";
 
 function PerfilUsuario() {
     const [editando, setEditando] = useState(false);
@@ -24,7 +25,32 @@ function PerfilUsuario() {
         comprasRealizadas: 0
     });
 
+    const navigate = useNavigate();
+
     const cargarDatosDesdeAPI = async () => {
+        try {
+
+        const usuario = await apiUsuarios.getById();
+
+        setDatosUsuario({
+            nombre: usuario.nombre || "",
+            apellidos: usuario.apellidos || "",
+            email: usuario.email || "",
+            telefono: usuario.telefono || "",
+            fechaNacimiento: usuario.fechaNacimiento || ""
+        });
+
+        setInfoFija({
+            ventasRealizadas: usuario.ventasRealizadas,
+            comprasRealizadas: usuario.comprasRealizadas
+        });
+
+        setAdministrador(usuario.administrador);
+
+        } catch (error) {
+            console.warn(error);
+            navigate("/");
+        }
         const usuario = await apiUsuarios.getById();
 
         setDatosUsuario({

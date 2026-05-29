@@ -4,10 +4,12 @@ import Header from "../components/Header";
 import ListaCompraventas from "../components/ListaCompraventas";
 import Paginador from "../components/Paginador";
 import { apiCompraventas } from "../js/apiCompraventas";
+import { useNavigate } from "react-router";
 
 function Compras() {
     const [compras, setCompras] = useState([]);
     const [paginas, setPaginas] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const init = async () => {
@@ -16,6 +18,7 @@ function Compras() {
                 setCompras(comprasRespuesta);
                 setPaginas(nuevaInfoPaginas);
             } catch (error) {
+                navigate("/");
                 console.error("Error al inicializar la Home:", error);
             }
         };

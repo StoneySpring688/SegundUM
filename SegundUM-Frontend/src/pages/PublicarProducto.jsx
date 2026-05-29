@@ -4,10 +4,13 @@ import { Container, Card, Form, Button, Row, Col, ListGroup, Alert } from "react
 import Header from "../components/Header";
 import { dataService } from "../js/dataService";
 import { apiProductos } from "../js/apiProductos";
+import { useNavigate } from "react-router";
+
 
 function PublicarProducto() {
     const [validado, setValidado] = useState(false);
     const [publicado, setPublicado] = useState(false);
+    const navigate = useNavigate();
 
     const [categorias, setCategorias] = useState([]);
     const [busquedaCat, setBusquedaCat] = useState("");
@@ -29,14 +32,21 @@ function PublicarProducto() {
 
     useEffect(() => {
         const initCategorias = async () => {
-            let cats = dataService.getCategorias();
+            try {
+                 let cats = dataService.getCategorias();
             if (cats.length === 0) {
                 cats = await apiProductos.getAllCategorias();
                 dataService.setCategorias(cats);
             }
             setCategorias(cats);
+            } catch (error) {
+                navigate("/");
+                console.log(error);
+            }
+           
         };
         initCategorias();
+
     }, []);
 
     const categoriasFiltradas = categorias.filter(cat =>

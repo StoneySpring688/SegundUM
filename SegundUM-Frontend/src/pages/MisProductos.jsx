@@ -4,18 +4,22 @@ import Header from "../components/Header"
 import ListaProductos from "../components/ListaProductos";
 import Paginador from "../components/Paginador";
 import { apiProductos } from "../js/apiProductos";
+import { useNavigate } from "react-router";
+
 
 function MisProductos(){
     const [productos, setProductos] = useState([]);
     const [paginas, setPaginas] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() =>{
-        const init = async (params) => {
+        const init = async () => {
             try {
                 const { paginas: nuevaInfoPaginas, productos: nuevosProductos } = await apiProductos.getProductosPublicados(0);
                 setProductos(nuevosProductos);
                 setPaginas(nuevaInfoPaginas);
             } catch (error) {
+                navigate("/");
                 console.error("Error al inicializar mis productos: ", error);
             }
         };
