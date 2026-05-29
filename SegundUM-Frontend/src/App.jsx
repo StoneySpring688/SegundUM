@@ -1,6 +1,5 @@
 // Enrutador principal: define todas las rutas de la aplicación
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route, Link } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router";
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
@@ -13,6 +12,7 @@ import CompraventasEntre from './pages/CompraventasEntre';
 import PublicarProducto from './pages/PublicarProducto';
 import MisProductos from './pages/MisProductos';
 import ListaUsuarios from './pages/ListaUsuarios';
+import NotFound from './pages/NotFound';
 
 function App() {
 
@@ -31,6 +31,7 @@ function App() {
         <Route path='/publicar/' element={<PublicarProducto/>}/>
         <Route path='/misProductos/' element={<MisProductos/>}/>
         <Route path='/listaUsuarios/' element={<ListaUsuarios/>}/>
+        <Route path='*' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   )
